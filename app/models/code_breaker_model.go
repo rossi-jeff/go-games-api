@@ -7,6 +7,8 @@ type CodeBreaker struct {
 	Status                 enum.GameStatus
 	Columns, Colors, Score int
 	Available              string
-	UserId                 int64 `json:"user_id"`
-	User                   User  `json:"user,omitempty"`
+	UserId                 int64              `json:"user_id"`
+	User                   User               `json:"user,omitempty"`
+	Codes                  []CodeBreakerCode  `json:"codes,omitempty"`
+	Guesses                []CodeBreakerGuess `json:"guesses,omitempty"`
 }

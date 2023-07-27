@@ -8,7 +8,7 @@ const (
 	Won
 )
 
-var GameStatusArray = []string{"Lost", "Playing", "Won"}
+var GameStatusArray = [3]string{"Lost", "Playing", "Won"}
 
 func (g GameStatus) String() string {
 	return GameStatusArray[g]
