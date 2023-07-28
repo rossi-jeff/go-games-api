@@ -1,6 +1,6 @@
 package models
 
-import "go-games-api/app/enum"
+import "go-games-api/enum"
 
 type YachtTurn struct {
 	BaseModel
