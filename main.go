@@ -1,8 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"go-games-api/controllers"
 	"go-games-api/initializers"
+
+	"github.com/gin-gonic/gin"
 )
 
 func init() {
@@ -11,5 +13,12 @@ func init() {
 }
 
 func main() {
-	fmt.Println("main")
+	router := gin.Default()
+	api := router.Group("/api")
+
+	// word controller
+	api.GET("/word/:id", controllers.WordById)
+	api.POST("/word/random", controllers.WordRandom)
+
+	router.Run()
 }
