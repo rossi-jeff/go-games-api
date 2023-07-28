@@ -1,11 +1,6 @@
 package config
 
-import (
-	"log"
-	"os"
-
-	"github.com/joho/godotenv"
-)
+import "os"
 
 type DbConfig struct {
 	DbUser string
@@ -17,13 +12,6 @@ type DbConfig struct {
 
 type Config struct {
 	Database DbConfig
-}
-
-func init() {
-	// loads values from .env into the system
-	if err := godotenv.Load(); err != nil {
-		log.Print("No .env file found")
-	}
 }
 
 func New() *Config {
