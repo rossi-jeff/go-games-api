@@ -1,40 +1,33 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"go-games-api/app/enum"
 	"go-games-api/app/models"
+	"go-games-api/db"
+	"go-games-api/utilities"
 	"log"
 )
 
-func PrettyStruct(data interface{}) (string, error) {
-	val, err := json.MarshalIndent(data, "", "    ")
-	if err != nil {
-		return "", err
-	}
-	return string(val), nil
-}
-
 func main() {
-	user := models.User{}
-	res1, err := PrettyStruct(user)
+	conn := db.Connect()
+	defer conn.Close()
+	query := "SELECT id,Total,NumTurns,created_at,updated_at,COALESCE(user_id,0) FROM yachts"
+	rows, err := conn.Query(query)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(res1)
-	word := models.Word{}
-	res2, err := PrettyStruct(word)
+	var yachts []models.Yacht
+	for rows.Next() {
+		var yacht models.Yacht
+		err := rows.Scan(&yacht.Total, &yacht.NumTurns, &yacht.Id, &yacht.CreatedAt, &yacht.UpdatedAt, &yacht.UserId)
+		if err != nil {
+			log.Fatal(err)
+		}
+		yachts = append(yachts, yacht)
+	}
+	json, err := utilities.PrettyStruct(yachts)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(res2)
-	codeBreaker := models.CodeBreaker{
-		Status: enum.Playing,
-	}
-	res3, err := PrettyStruct(codeBreaker)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(res3)
+	fmt.Println(json)
 }
