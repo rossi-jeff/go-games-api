@@ -12,3 +12,8 @@ type HangMan struct {
 	WordId         int64 `json:"word_id"`
 	Word           Word  `json:"word,omitempty"`
 }
+
+type HangManPaginated struct {
+	Items []HangMan
+	Paginated
+}

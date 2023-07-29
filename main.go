@@ -34,6 +34,9 @@ func main() {
 	// guess word controller
 	api.GET("/guess_word", controllers.GuessWordIndex)
 	api.GET("/guess_word/:id", controllers.GuessWordById)
+	// hang man controller
+	api.GET("/hang_man", controllers.HangManIndex)
+	api.GET("/hang_man/:id", controllers.HanManById)
 
 	router.Run()
 }
