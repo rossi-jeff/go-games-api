@@ -21,7 +21,7 @@ func GuessWordIndex(c *gin.Context) {
 	initializers.DB.Where("Status <> 1").Order("Score DESC").Offset(params.Offset).Limit(params.Limit).Preload("User").Preload("Word").Find(&response.Items)
 
 	// response
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, response.Json())
 }
 
 func GuessWordById(c *gin.Context) {
@@ -32,5 +32,5 @@ func GuessWordById(c *gin.Context) {
 	initializers.DB.Preload("Guesses.Ratings").Preload(clause.Associations).First(&guessWord, id)
 
 	// response
-	c.JSON(http.StatusOK, guessWord)
+	c.JSON(http.StatusOK, guessWord.Json())
 }
