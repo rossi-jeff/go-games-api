@@ -20,7 +20,7 @@ func PokerSquareIndex(c *gin.Context) {
 	initializers.DB.Where("Status <> 1").Order("Status DESC, Score ASC").Offset(params.Offset).Limit(params.Limit).Preload("User").Find(&response.Items)
 
 	// response
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, response.Json())
 }
 
 func PokerSquareById(c *gin.Context) {
@@ -31,5 +31,5 @@ func PokerSquareById(c *gin.Context) {
 	initializers.DB.Preload("User").First(&pokerSquare, id)
 
 	// response
-	c.JSON(http.StatusOK, pokerSquare)
+	c.JSON(http.StatusOK, pokerSquare.Json())
 }

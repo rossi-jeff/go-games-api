@@ -20,7 +20,7 @@ func HangManIndex(c *gin.Context) {
 	initializers.DB.Where("Status <> 1").Order("Score DESC").Offset(params.Offset).Limit(params.Limit).Preload("User").Preload("Word").Find(&response.Items)
 
 	// response
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, response.Json())
 }
 
 func HangManById(c *gin.Context) {
@@ -31,5 +31,5 @@ func HangManById(c *gin.Context) {
 	initializers.DB.Preload("User").Preload("Word").First(&hangMan, id)
 
 	// response
-	c.JSON(http.StatusOK, hangMan)
+	c.JSON(http.StatusOK, hangMan.Json())
 }

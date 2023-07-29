@@ -20,7 +20,7 @@ func KlondikeIndex(c *gin.Context) {
 	initializers.DB.Where("Status <> 1").Order("Status DESC, Moves ASC").Offset(params.Offset).Limit(params.Limit).Preload("User").Find(&response.Items)
 
 	// response
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, response.Json())
 }
 
 func KlondikeById(c *gin.Context) {
@@ -31,5 +31,5 @@ func KlondikeById(c *gin.Context) {
 	initializers.DB.Preload("User").First(&klondike, id)
 
 	// response
-	c.JSON(http.StatusOK, klondike)
+	c.JSON(http.StatusOK, klondike.Json())
 }
