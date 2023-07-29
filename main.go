@@ -36,7 +36,13 @@ func main() {
 	api.GET("/guess_word/:id", controllers.GuessWordById)
 	// hang man controller
 	api.GET("/hang_man", controllers.HangManIndex)
-	api.GET("/hang_man/:id", controllers.HanManById)
+	api.GET("/hang_man/:id", controllers.HangManById)
+	// klondike controller
+	api.GET("/klondike", controllers.KlondikeIndex)
+	api.GET("/klondike/:id", controllers.KlondikeById)
+	// poker square controller
+	api.GET("/poker_square", controllers.PokerSquareIndex)
+	api.GET("/poker_square/:id", controllers.PokerSquareById)
 
 	router.Run()
 }

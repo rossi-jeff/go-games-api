@@ -23,7 +23,7 @@ func HangManIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func HanManById(c *gin.Context) {
+func HangManById(c *gin.Context) {
 	// get id
 	id := c.Param("id")
 
