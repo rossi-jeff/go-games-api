@@ -16,6 +16,9 @@ func main() {
 	router := gin.Default()
 	api := router.Group("/api")
 
+	// auth controller
+	api.POST("/auth/register", controllers.Register)
+	api.POST("/auth/login", controllers.Login)
 	// word controller
 	api.GET("/word/:id", controllers.WordById)
 	api.POST("/word/random", controllers.WordRandom)

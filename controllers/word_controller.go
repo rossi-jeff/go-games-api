@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-games-api/initializers"
 	"go-games-api/models"
+	"go-games-api/payloads"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,12 +24,7 @@ func WordById(c *gin.Context) {
 
 func WordRandom(c *gin.Context) {
 	// get parameters
-	type Params struct {
-		Length int
-		Min    int
-		Max    int
-	}
-	params := Params{}
+	params := payloads.RandomWordPayload{}
 	err := c.ShouldBindJSON(&params)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
