@@ -7,3 +7,17 @@ type CodeBreakerGuessKey struct {
 	Key                enum.Key
 	CodeBreakerGuessId int64 `json:"code_breaker_guess_id"`
 }
+
+type CodeBreakerGuessKeyJson struct {
+	BaseModel
+	CodeBreakerGuessId int64 `json:"code_breaker_guess_id"`
+	Key                string
+}
+
+func (c CodeBreakerGuessKey) Json() CodeBreakerGuessKeyJson {
+	return CodeBreakerGuessKeyJson{
+		BaseModel:          c.BaseModel,
+		CodeBreakerGuessId: c.CodeBreakerGuessId,
+		Key:                c.Key.String(),
+	}
+}

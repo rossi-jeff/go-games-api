@@ -20,7 +20,7 @@ func FreeCellIndex(c *gin.Context) {
 	initializers.DB.Where("Status <> 1").Order("Status DESC, Moves ASC").Offset(params.Offset).Limit(params.Limit).Preload("User").Find(&response.Items)
 
 	// response
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, response.Json())
 }
 
 func FreeCellById(c *gin.Context) {
@@ -31,5 +31,5 @@ func FreeCellById(c *gin.Context) {
 	initializers.DB.Preload("User").First(&freeCell, id)
 
 	// response
-	c.JSON(http.StatusOK, freeCell)
+	c.JSON(http.StatusOK, freeCell.Json())
 }

@@ -21,7 +21,7 @@ func CodeBreakerIndex(c *gin.Context) {
 	initializers.DB.Order("Score DESC").Offset(params.Offset).Limit(params.Limit).Preload("User").Find(&response.Items)
 
 	// response
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, response.Json())
 }
 
 func CodeBreakerById(c *gin.Context) {
@@ -33,5 +33,5 @@ func CodeBreakerById(c *gin.Context) {
 	initializers.DB.Preload("Guesses.Colors").Preload("Guesses.Keys").Preload(clause.Associations).First(&codeBreaker, id)
 
 	// response
-	c.JSON(http.StatusOK, codeBreaker)
+	c.JSON(http.StatusOK, codeBreaker.Json())
 }

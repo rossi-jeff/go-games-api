@@ -20,7 +20,7 @@ func ConcentrationIndex(c *gin.Context) {
 	initializers.DB.Where("Status <> 1").Order("Status DESC, Moves ASC").Offset(params.Offset).Limit(params.Limit).Preload("User").Find(&response.Items)
 
 	// response
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, response.Json())
 }
 
 func ConcentrationById(c *gin.Context) {
@@ -31,5 +31,5 @@ func ConcentrationById(c *gin.Context) {
 	initializers.DB.Preload("User").First(&concentration, id)
 
 	// response
-	c.JSON(http.StatusOK, concentration)
+	c.JSON(http.StatusOK, concentration.Json())
 }
