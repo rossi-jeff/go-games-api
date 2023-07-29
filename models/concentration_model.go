@@ -9,3 +9,8 @@ type Concentration struct {
 	UserId                  int64 `json:"user_id"`
 	User                    User  `json:"user,omitempty"`
 }
+
+type ConcentrationPaginated struct {
+	Items []Concentration
+	Paginated
+}

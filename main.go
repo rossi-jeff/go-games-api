@@ -22,6 +22,9 @@ func main() {
 	// code breaker controller
 	api.GET("/code_breaker", controllers.CodeBreakerIndex)
 	api.GET("/code_breaker/:id", controllers.CodeBreakerById)
+	// concentration controller
+	api.GET("/concentration", controllers.ConcentrationIndex)
+	api.GET("/concentration/:id", controllers.ConcentrationById)
 
 	router.Run()
 }
