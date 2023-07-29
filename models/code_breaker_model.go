@@ -12,3 +12,8 @@ type CodeBreaker struct {
 	Codes                  []CodeBreakerCode  `json:"codes,omitempty"`
 	Guesses                []CodeBreakerGuess `json:"guesses,omitempty"`
 }
+
+type CodeBreakerPaginated struct {
+	Items []CodeBreaker
+	Paginated
+}

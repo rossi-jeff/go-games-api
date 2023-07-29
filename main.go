@@ -19,6 +19,9 @@ func main() {
 	// word controller
 	api.GET("/word/:id", controllers.WordById)
 	api.POST("/word/random", controllers.WordRandom)
+	// code breaker controller
+	api.GET("/code_breaker", controllers.CodeBreakerIndex)
+	api.GET("/code_breaker/:id", controllers.CodeBreakerById)
 
 	router.Run()
 }
