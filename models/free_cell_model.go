@@ -9,3 +9,8 @@ type FreeCell struct {
 	UserId         int64 `json:"user_id"`
 	User           User  `json:"user,omitempty"`
 }
+
+type FreeCellPaginated struct {
+	Items []FreeCell
+	Paginated
+}

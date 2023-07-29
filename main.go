@@ -25,6 +25,12 @@ func main() {
 	// concentration controller
 	api.GET("/concentration", controllers.ConcentrationIndex)
 	api.GET("/concentration/:id", controllers.ConcentrationById)
+	// free cell controller
+	api.GET("/free_cell", controllers.FreeCellIndex)
+	api.GET("/free_cell/:id", controllers.FreeCellById)
+	// guess word controller
+	api.GET("/guess_word", controllers.GuessWordIndex)
+	api.GET("/guess_word/:id", controllers.GuessWordById)
 
 	router.Run()
 }
