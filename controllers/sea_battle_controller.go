@@ -10,6 +10,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+// @Summary      Sea Battle
+// @Description  paginated list of sea battle
+// @Tags         Sea Battle
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.SeaBattlePaginated
+// @Router       /api/sea_battle [get]
 func SeaBattleIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.SeaBattlePaginated{}
@@ -24,6 +33,14 @@ func SeaBattleIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Sea Battle by Id
+// @Description  get a sea battle
+// @Tags         Sea Battle
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Sea Battle ID"
+// @Success      200  {object} models.SeaBattle
+// @Router       /api/sea_battle/{Id} [get]
 func SeaBattleById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

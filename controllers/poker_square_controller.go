@@ -9,6 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Poker Square
+// @Description  paginated list of poker square
+// @Tags         Poker Square
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.PokerSquarePaginated
+// @Router       /api/poker_square [get]
 func PokerSquareIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.PokerSquarePaginated{}
@@ -23,6 +32,14 @@ func PokerSquareIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Poker Square by Id
+// @Description  get a poker square
+// @Tags         Poker Square
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Poker Square ID"
+// @Success      200  {object} models.PokerSquare
+// @Router       /api/poker_square/{Id} [get]
 func PokerSquareById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

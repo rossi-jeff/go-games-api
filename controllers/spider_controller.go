@@ -9,6 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Spider
+// @Description  paginated list of spider
+// @Tags         Spider
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.SpiderPaginated
+// @Router       /api/spider [get]
 func SpiderIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.SpiderPaginated{}
@@ -23,6 +32,14 @@ func SpiderIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Spider by Id
+// @Description  get a spider
+// @Tags         Spider
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Spider ID"
+// @Success      200  {object} models.Spider
+// @Router       /api/spider/{Id} [get]
 func SpiderById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

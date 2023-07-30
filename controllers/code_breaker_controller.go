@@ -39,7 +39,7 @@ func CodeBreakerIndex(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param Id path int true "Code Breaker ID"
-// @Success      200  {object} models.CodeBreakerPaginated
+// @Success      200  {object} models.CodeBreaker
 // @Router       /api/code_breaker/{Id} [get]
 func CodeBreakerById(c *gin.Context) {
 	// get id

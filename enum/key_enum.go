@@ -1,5 +1,7 @@
 package enum
 
+// Key enum info
+// @Description database contains integer but values are "Black", "White"
 type Key int
 
 const (

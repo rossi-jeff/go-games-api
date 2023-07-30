@@ -10,6 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Word by Id
+// @Description  get a word
+// @Tags         Word
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Word ID"
+// @Success      200  {object} models.Word
+// @Router       /api/word/{Id} [get]
 func WordById(c *gin.Context) {
 	// get id
 	id := c.Param("id")
@@ -22,6 +30,13 @@ func WordById(c *gin.Context) {
 	c.JSON(http.StatusOK, word)
 }
 
+// @Summary      Random Word
+// @Description  get a random word
+// @Tags         Word
+// @Accept       json
+// @Produce      json
+// @Param	data	body	payloads.RandomWordPayload		true	"Random Word Options"
+// @Router       /api/word/random [post]
 func WordRandom(c *gin.Context) {
 	// get parameters
 	params := payloads.RandomWordPayload{}

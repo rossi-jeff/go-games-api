@@ -1,5 +1,7 @@
 package enum
 
+// GameStatus enum info
+// @Description  database contains integer but values are "Lost", "Playing", "Won"
 type GameStatus int
 
 const (

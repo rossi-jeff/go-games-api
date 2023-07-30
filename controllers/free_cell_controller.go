@@ -9,6 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Free Cell
+// @Description  paginated list of free cell
+// @Tags         Free Cell
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.FreeCellPaginated
+// @Router       /api/free_cell [get]
 func FreeCellIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.FreeCellPaginated{}
@@ -23,6 +32,14 @@ func FreeCellIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Free Cell by Id
+// @Description  get a code breaker
+// @Tags         Free Cell
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Free Cell ID"
+// @Success      200  {object} models.FreeCell
+// @Router       /api/free_cell/{Id} [get]
 func FreeCellById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

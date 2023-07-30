@@ -1,5 +1,7 @@
 package enum
 
+// Navy enum info
+// @Description database contains integer but values are "Player", "Opponent"
 type Navy int
 
 const (

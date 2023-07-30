@@ -18,6 +18,12 @@ func init() {
 
 // @Title Games API in Go
 // @Description backend implementation to match typescript version
+// @version         0.1.0
+// @contact.name   Jeff Rossi
+// @contact.url    https://resume-svelte.jeff-rossi.com/
+// @contact.email  inquiries@jeff-rossi.com
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	router := gin.Default()
 

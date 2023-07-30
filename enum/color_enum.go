@@ -1,5 +1,7 @@
 package enum
 
+// Color enum info
+// @Description database contains integer but values are "Black", "Blue", "Brown", "Green", "Orange", "Purple", "Red", "White", "Yellow"
 type Color int
 
 const (

@@ -10,6 +10,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+// @Summary      Ten Grand
+// @Description  paginated list of ten grand
+// @Tags         Ten Grand
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.TenGrandPaginated
+// @Router       /api/ten_grand [get]
 func TenGrandIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.TenGrandPaginated{}
@@ -24,6 +33,14 @@ func TenGrandIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Ten Grand by Id
+// @Description  get a ten grand
+// @Tags         Ten Grand
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Ten Grand ID"
+// @Success      200  {object} models.TenGrand
+// @Router       /api/ten_grand/{Id} [get]
 func TenGrandById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

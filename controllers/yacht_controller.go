@@ -9,6 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Yacht
+// @Description  paginated list of yacht
+// @Tags         Yacht
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.YachtPaginated
+// @Router       /api/yacht [get]
 func YachtIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.YachtPaginated{}
@@ -23,12 +32,20 @@ func YachtIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Yacht by Id
+// @Description  get a yacht
+// @Tags         Yacht
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Yacht ID"
+// @Success      200  {object} models.Yacht
+// @Router       /api/yacht/{Id} [get]
 func YachtById(c *gin.Context) {
 	// get id
 	id := c.Param("id")
 
 	yacht := models.Yacht{}
-	initializers.DB.Preload("User").First(&yacht, id)
+	initializers.DB.Preload("User").Preload("Turns").First(&yacht, id)
 
 	// response
 	c.JSON(http.StatusOK, yacht.Json())

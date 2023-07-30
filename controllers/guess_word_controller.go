@@ -10,6 +10,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+// @Summary      Guess Word
+// @Description  paginated list of guess word
+// @Tags         Guess Word
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.GuessWordPaginated
+// @Router       /api/guess_word [get]
 func GuessWordIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.GuessWordPaginated{}
@@ -24,6 +33,14 @@ func GuessWordIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Guess Word by Id
+// @Description  get a code guess word
+// @Tags         Guess Word
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Guess Word ID"
+// @Success      200  {object} models.GuessWord
+// @Router       /api/guess_word/{Id} [get]
 func GuessWordById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

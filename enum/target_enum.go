@@ -1,5 +1,7 @@
 package enum
 
+// Target enum info
+// @Description database contains integer but values are "Miss", "Hit", "Sunk"
 type Target int
 
 const (

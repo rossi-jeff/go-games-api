@@ -1,5 +1,8 @@
 package enum
 
+// YachtCategory enum info
+// @Description database contains integer but values are "BigStraight", "Choice", "Fives", "FourOfKind", "Fours", "FullHouse",
+// @description "LittleStraight", "Ones", "Sixes", "Threes", "Twos", "Yacht"
 type YachtCategory int
 
 const (

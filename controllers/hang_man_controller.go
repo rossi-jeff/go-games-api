@@ -9,6 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Hang Man
+// @Description  paginated list of hang man
+// @Tags         Hang Man
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.HangManPaginated
+// @Router       /api/hang_man [get]
 func HangManIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.HangManPaginated{}
@@ -23,6 +32,14 @@ func HangManIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Hang Man by Id
+// @Description  get a hang man
+// @Tags         Hang Man
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Hang Man ID"
+// @Success      200  {object} models.HangMan
+// @Router       /api/hang_man/{Id} [get]
 func HangManById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

@@ -9,6 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Concentration
+// @Description  paginated list of concentation
+// @Tags         Concentration
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.ConcentrationPaginated
+// @Router       /api/concentration [get]
 func ConcentrationIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.ConcentrationPaginated{}
@@ -23,6 +32,14 @@ func ConcentrationIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Concentration by Id
+// @Description  get a concentation
+// @Tags         Concentration
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Concentration ID"
+// @Success      200  {object} models.Concentration
+// @Router       /api/concentration/{Id} [get]
 func ConcentrationById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

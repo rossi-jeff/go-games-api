@@ -1,5 +1,7 @@
 package enum
 
+// ShipType enum info
+// @Description database contains integer but values are "BattleShip", "Carrier", "Cruiser", "PatrolBoat", "SubMarine"
 type ShipType int
 
 const (

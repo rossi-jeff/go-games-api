@@ -9,6 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Klondike
+// @Description  paginated list of klondike
+// @Tags         Klondike
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.KlondikePaginated
+// @Router       /api/klondike [get]
 func KlondikeIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.KlondikePaginated{}
@@ -23,6 +32,14 @@ func KlondikeIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Klondike by Id
+// @Description  get a klondike
+// @Tags         Klondike
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Klondike ID"
+// @Success      200  {object} models.Klondike
+// @Router       /api/klondike/{Id} [get]
 func KlondikeById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

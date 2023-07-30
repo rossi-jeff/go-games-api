@@ -1,5 +1,7 @@
 package enum
 
+// Rating enum info
+// @Description database contains integer but values are "Gray", "Brown", "Green"
 type Rating int
 
 const (
