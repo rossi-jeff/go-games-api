@@ -25,6 +25,11 @@ func (c Color) String() string {
 	return ColorArray[c]
 }
 
-func (c Color) EnumIndex() int {
-	return int(c)
+func ColorArrayIndex(color string) int {
+	for i := 0; i < len(ColorArray); i++ {
+		if color == ColorArray[i] {
+			return i
+		}
+	}
+	return -1
 }

@@ -41,6 +41,8 @@ func main() {
 	// code breaker controller
 	api.GET("/code_breaker", controllers.CodeBreakerIndex)
 	api.GET("/code_breaker/:id", controllers.CodeBreakerById)
+	api.POST("/code_breaker", controllers.CodeBreakerCreate)
+	api.POST("/code_breaker/:id/guess", controllers.CodeBreakerGuess)
 	// concentration controller
 	api.GET("/concentration", controllers.ConcentrationIndex)
 	api.GET("/concentration/:id", controllers.ConcentrationById)

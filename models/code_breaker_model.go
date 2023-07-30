@@ -7,7 +7,7 @@ type CodeBreaker struct {
 	Status                 enum.GameStatus
 	Columns, Colors, Score int
 	Available              string
-	UserId                 int64              `json:"user_id"`
+	UserId                 NullInt64          `json:"user_id" swaggerType:"string"`
 	User                   User               `json:"user,omitempty"`
 	Codes                  []CodeBreakerCode  `json:"codes,omitempty"`
 	Guesses                []CodeBreakerGuess `json:"guesses,omitempty"`
@@ -22,8 +22,8 @@ type CodeBreakerJson struct {
 	BaseModel
 	Columns, Colors, Score int
 	Available              string
-	UserId                 int64 `json:"user_id"`
-	User                   User  `json:"user,omitempty"`
+	UserId                 NullInt64 `json:"user_id" swaggerType:"string"`
+	User                   User      `json:"user,omitempty"`
 	Status                 string
 	Codes                  []CodeBreakerCodeJson  `json:"codes,omitempty"`
 	Guesses                []CodeBreakerGuessJson `json:"guesses,omitempty"`

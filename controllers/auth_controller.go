@@ -5,13 +5,11 @@ import (
 	"go-games-api/initializers"
 	"go-games-api/models"
 	"go-games-api/payloads"
+	"go-games-api/utilities"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // @Summary      Register
@@ -30,7 +28,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	var hashedPassword, err2 = HashPassword(params.Password)
+	var hashedPassword, err2 = utilities.HashPassword(params.Password)
 
 	if err2 != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err2.Error()})
@@ -78,13 +76,13 @@ func Login(c *gin.Context) {
 	user := models.User{}
 	initializers.DB.Where("UserName = ?", params.UserName).First(&user)
 
-	if !PasswordsMatch(user.PassWord, params.Password) {
+	if !utilities.PasswordsMatch(user.PassWord, params.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		fmt.Println("error matching")
 		return
 	}
 
-	tokenString, err := GenerateToken(user)
+	tokenString, err := utilities.GenerateToken(user)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		fmt.Println("error token")
@@ -98,29 +96,4 @@ func Login(c *gin.Context) {
 
 	// response
 	c.JSON(http.StatusOK, response)
-}
-
-func HashPassword(password string) (string, error) {
-	// Convert password string to byte slice
-	var passwordBytes = []byte(password)
-
-	// Hash password with bcrypt's min cost
-	hashedPasswordBytes, err := bcrypt.
-		GenerateFromPassword(passwordBytes, bcrypt.MinCost)
-
-	return string(hashedPasswordBytes), err
-}
-
-func PasswordsMatch(hashedPassword, currPassword string) bool {
-	err := bcrypt.CompareHashAndPassword(
-		[]byte(hashedPassword), []byte(currPassword))
-	return err == nil
-}
-
-func GenerateToken(user models.User) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.Id,
-		"exp": time.Now().Add(time.Minute * 60 * 24 * 7).Unix(),
-	})
-	return token.SignedString([]byte(os.Getenv("SECRET")))
 }
