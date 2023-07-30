@@ -46,6 +46,9 @@ func main() {
 	// sea battle controller
 	api.GET("/sea_battle", controllers.SeaBattleIndex)
 	api.GET("/sea_battle/:id", controllers.SeaBattleById)
+	// ten grand controller
+	api.GET("/ten_grand", controllers.TenGrandIndex)
+	api.GET("/ten_grand/:id", controllers.TenGrandById)
 
 	router.Run()
 }
