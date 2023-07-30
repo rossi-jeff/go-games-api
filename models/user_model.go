@@ -1,7 +1,7 @@
 package models
 
 type User struct {
-	UserName string
-	PassWord string `json:"password_digest"`
+	UserName string `gorm:"column:UserName"`
+	PassWord string `json:"password_digest" gorm:"column:password_digest"`
 	BaseModel
 }

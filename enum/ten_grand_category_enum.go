@@ -1,5 +1,8 @@
 package enum
 
+// TenGrandCategory enum info
+// @Description  database contains integer but values are "CrapOut", "Ones", "Fives", "ThreePairs", "Straight", "FullHouse",
+// @Description "DoubleThreeKind", "ThreeKind", "FourKind", "FiveKind", "SixKind"
 type TenGrandCategory int
 
 const (

@@ -1,5 +1,7 @@
 package enum
 
+// ShipType enum info
+// @Description database contains integer but values are "BattleShip", "Carrier", "Cruiser", "PatrolBoat", "SubMarine"
 type ShipType int
 
 const (
@@ -13,6 +15,9 @@ const (
 var ShipTypeArray = [...]string{"BattleShip", "Carrier", "Cruiser", "PatrolBoat", "SubMarine"}
 
 func (s ShipType) String() string {
+	if s < 0 || s >= 5 {
+		return ""
+	}
 	return ShipTypeArray[s]
 }
 
