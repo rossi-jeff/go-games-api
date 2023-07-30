@@ -46,6 +46,8 @@ func main() {
 	// concentration controller
 	api.GET("/concentration", controllers.ConcentrationIndex)
 	api.GET("/concentration/:id", controllers.ConcentrationById)
+	api.POST("/concentration", controllers.ConcentrationCreate)
+	api.PATCH("/concentration/:id", controllers.ConcentrationUpdate)
 	// free cell controller
 	api.GET("/free_cell", controllers.FreeCellIndex)
 	api.GET("/free_cell/:id", controllers.FreeCellById)

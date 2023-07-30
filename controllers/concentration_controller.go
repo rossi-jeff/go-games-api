@@ -1,10 +1,13 @@
 package controllers
 
 import (
+	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
+	"go-games-api/payloads"
 	"go-games-api/utilities"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -48,5 +51,50 @@ func ConcentrationById(c *gin.Context) {
 	initializers.DB.Preload("User").First(&concentration, id)
 
 	// response
+	c.JSON(http.StatusOK, concentration.Json())
+}
+
+// @Summary      Create Concentration
+// @Description  returns a new  concentation
+// @Tags         Concentration
+// @Accept       json
+// @Produce      json
+// @Success      201  {object} models.Concentration
+// @Router       /api/concentration [post]
+func ConcentrationCreate(c *gin.Context) {
+	now := time.Now().Format(time.RFC3339)
+	concentration := models.Concentration{}
+	concentration.Status = enum.Playing
+	concentration.CreatedAt = now
+	concentration.UpdatedAt = now
+	initializers.DB.Save(&concentration)
+
+	c.JSON(http.StatusOK, concentration.Json())
+}
+
+// @Summary      Update Concentration
+// @Description  update a concentation
+// @Tags         Concentration
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Concentration ID"
+// @Param	data	body	payloads.ConcentrationUpdatePayload		true	"Concentration Updates"
+// @Success      200  {object} models.Concentration
+// @Router       /api/concentration/{Id} [patch]
+func ConcentrationUpdate(c *gin.Context) {
+	params := payloads.ConcentrationUpdatePayload{}
+	id := c.Param("id")
+
+	err := c.ShouldBindJSON(&params)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	concentration := models.Concentration{}
+	initializers.DB.First(&concentration, id)
+
+	initializers.DB.Model(&concentration).Preload("User").Updates(&params)
+
 	c.JSON(http.StatusOK, concentration.Json())
 }
