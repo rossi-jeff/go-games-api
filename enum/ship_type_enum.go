@@ -13,6 +13,9 @@ const (
 var ShipTypeArray = [...]string{"BattleShip", "Carrier", "Cruiser", "PatrolBoat", "SubMarine"}
 
 func (s ShipType) String() string {
+	if s < 0 || s >= 5 {
+		return ""
+	}
 	return ShipTypeArray[s]
 }
 

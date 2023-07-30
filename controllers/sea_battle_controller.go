@@ -10,13 +10,13 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func CodeBreakerIndex(c *gin.Context) {
+func SeaBattleIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
-	response := models.CodeBreakerPaginated{}
+	response := models.SeaBattlePaginated{}
 	response.Limit = params.Limit
 	response.Offset = params.Offset
 	var count int64
-	initializers.DB.Where("Status <> 1").Find(&models.CodeBreaker{}).Count(&count)
+	initializers.DB.Where("Status <> 1").Find(&models.SeaBattle{}).Count(&count)
 	response.Count = int(count)
 	initializers.DB.Where("Status <> 1").Order("Score DESC").Offset(params.Offset).Limit(params.Limit).Preload("User").Find(&response.Items)
 
@@ -24,14 +24,13 @@ func CodeBreakerIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
-func CodeBreakerById(c *gin.Context) {
+func SeaBattleById(c *gin.Context) {
 	// get id
 	id := c.Param("id")
 
-	// find code breaker
-	codeBreaker := models.CodeBreaker{}
-	initializers.DB.Preload("Guesses.Colors").Preload("Guesses.Keys").Preload(clause.Associations).First(&codeBreaker, id)
+	seaBattle := models.SeaBattle{}
+	initializers.DB.Preload("Ships.Points").Preload("Ships.Hits").Preload(clause.Associations).First(&seaBattle, id)
 
 	// response
-	c.JSON(http.StatusOK, codeBreaker.Json())
+	c.JSON(http.StatusOK, seaBattle.Json())
 }
