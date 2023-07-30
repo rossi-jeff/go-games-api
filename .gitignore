@@ -1,2 +1,5 @@
 # environment
 .env
+
+# generated files from swag
+/docs

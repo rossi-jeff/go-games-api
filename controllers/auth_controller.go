@@ -14,6 +14,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// @Summary      Register
+// @Description  register a new user
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param	data	body	payloads.CredentialsPayload		true	"User Credentials"
+// @Success      201  {object} models.User
+// @Router       /api/auth/register [post]
 func Register(c *gin.Context) {
 	params := payloads.CredentialsPayload{}
 	err := c.ShouldBindJSON(&params)
@@ -50,6 +58,14 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, user)
 }
 
+// @Summary      Login
+// @Description  Login to get an auth token
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param	data	body	payloads.CredentialsPayload		true	"User Credentials"
+// @Success      200  {object} payloads.LoginResponse
+// @Router       /api/auth/login [post]
 func Login(c *gin.Context) {
 	params := payloads.CredentialsPayload{}
 	err := c.ShouldBindJSON(&params)

@@ -10,6 +10,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+// @Summary      Code Breakers
+// @Description  paginated list of code breakers
+// @Tags         Code Breaker
+// @Accept       json
+// @Produce      json
+// @Param	Limit	query	int	false	"Limit"
+// @Param	Offset	query	int	false	"Offset"
+// @Success      200  {object} models.CodeBreakerPaginated
+// @Router       /api/code_breaker [get]
 func CodeBreakerIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
 	response := models.CodeBreakerPaginated{}
@@ -24,6 +33,14 @@ func CodeBreakerIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Json())
 }
 
+// @Summary      Code Breaker by Id
+// @Description  get a code breaker
+// @Tags         Code Breaker
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Code Breaker ID"
+// @Success      200  {object} models.CodeBreakerPaginated
+// @Router       /api/code_breaker/{Id} [get]
 func CodeBreakerById(c *gin.Context) {
 	// get id
 	id := c.Param("id")

@@ -4,7 +4,11 @@ import (
 	"go-games-api/controllers"
 	"go-games-api/initializers"
 
+	_ "go-games-api/docs"
+
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func init() {
@@ -12,8 +16,14 @@ func init() {
 	initializers.DatabaseConnect()
 }
 
+// @Title Games API in Go
+// @Description backend implementation to match typescript version
 func main() {
 	router := gin.Default()
+
+	// docs route
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	api := router.Group("/api")
 
 	// auth controller
