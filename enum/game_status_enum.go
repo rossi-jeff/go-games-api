@@ -10,6 +10,14 @@ const (
 	Won
 )
 
+type GameStatusString string
+
+const (
+	LOST    GameStatusString = "Lost"
+	PLAYING GameStatusString = "Playing"
+	WON     GameStatusString = "Won"
+)
+
 var GameStatusArray = [3]string{"Lost", "Playing", "Won"}
 
 func (g GameStatus) String() string {
@@ -21,4 +29,13 @@ func (g GameStatus) String() string {
 
 func (g GameStatus) EnumIndex() int {
 	return int(g)
+}
+
+func GameStatusArrayIndex(status string) int {
+	for i := 0; i < len(GameStatusArray); i++ {
+		if GameStatusArray[i] == status {
+			return i
+		}
+	}
+	return -1
 }

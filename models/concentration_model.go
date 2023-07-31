@@ -4,12 +4,12 @@ import "go-games-api/enum"
 
 type Concentration struct {
 	BaseModel
-	Status  enum.GameStatus
-	Moves   int
-	Matched int
-	Elapsed int
-	UserId  NullInt64 `json:"user_id" swaggerType:"string"`
-	User    User      `json:"user,omitempty"`
+	Status  enum.GameStatus `gorm:"column:Status"`
+	Moves   int             `gorm:"column:Moves"`
+	Matched int             `gorm:"column:Matched"`
+	Elapsed int             `gorm:"column:Elapsed"`
+	UserId  NullInt64       `json:"user_id" swaggerType:"string"`
+	User    User            `json:"user,omitempty"`
 }
 
 type ConcentrationPaginated struct {
@@ -19,12 +19,12 @@ type ConcentrationPaginated struct {
 
 type ConcentrationJson struct {
 	BaseModel
-	Moves   int
-	Matched int
-	Elapsed int
+	Moves   int       `gorm:"column:Moves"`
+	Matched int       `gorm:"column:Matched"`
+	Elapsed int       `gorm:"column:Elapsed"`
 	UserId  NullInt64 `json:"user_id" swaggerType:"string"`
 	User    User      `json:"user,omitempty"`
-	Status  string
+	Status  enum.GameStatusString
 }
 
 func (c Concentration) Json() ConcentrationJson {
@@ -35,7 +35,7 @@ func (c Concentration) Json() ConcentrationJson {
 		Elapsed:   c.Elapsed,
 		UserId:    c.UserId,
 		User:      c.User,
-		Status:    c.Status.String(),
+		Status:    enum.GameStatusString(c.Status.String()),
 	}
 }
 
