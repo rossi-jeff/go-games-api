@@ -62,6 +62,8 @@ func main() {
 	// hang man controller
 	api.GET("/hang_man", controllers.HangManIndex)
 	api.GET("/hang_man/:id", controllers.HangManById)
+	api.POST("/hang_man", controllers.HangManCreate)
+	api.POST("/hang_man/:id/guess", controllers.HangManGuess)
 	// klondike controller
 	api.GET("/klondike", controllers.KlondikeIndex)
 	api.GET("/klondike/:id", controllers.KlondikeById)

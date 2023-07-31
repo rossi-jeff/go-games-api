@@ -25,7 +25,7 @@ type GuessWordJson struct {
 	User    User      `json:"user,omitempty"`
 	WordId  NullInt64 `json:"word_id" swaggerType:"string"`
 	Word    Word      `json:"word,omitempty"`
-	Status  string
+	Status  enum.GameStatusString
 	Guesses []GuessWordGuessJson `json:"guesses,omitempty"`
 }
 
@@ -37,7 +37,7 @@ func (g GuessWord) Json() GuessWordJson {
 		User:      g.User,
 		WordId:    g.WordId,
 		Word:      g.Word,
-		Status:    g.Status.String(),
+		Status:    enum.GameStatusString(g.Status.String()),
 	}
 	if len(g.Guesses) > 0 {
 		for i := 0; i < len(g.Guesses); i++ {
