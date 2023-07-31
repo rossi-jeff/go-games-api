@@ -174,16 +174,16 @@ func CalculateGuessRatings(c *gin.Context, codeBreaker models.CodeBreaker, guess
 	for i := len(code) - 1; i >= 0; i-- {
 		if code[i] == colors[i] {
 			black++
-			code = DeleteStringSliceIndex(code, i)
-			colors = DeleteStringSliceIndex(colors, i)
+			code = utilities.DeleteStringSliceIndex(code, i)
+			colors = utilities.DeleteStringSliceIndex(colors, i)
 		}
 	}
 
 	for i := 0; i < len(colors); i++ {
-		idx := SliceIndexOf(colors[i], code)
+		idx := utilities.StringSliceIndexOf(colors[i], code)
 		if idx != -1 {
 			white++
-			code = DeleteStringSliceIndex(code, idx)
+			code = utilities.DeleteStringSliceIndex(code, idx)
 		}
 	}
 
@@ -226,17 +226,4 @@ func UpdateCodeBreakerStatus(codeBreaker models.CodeBreaker, black int) {
 	if update.Status != enum.Playing {
 		initializers.DB.Model(&codeBreaker).Updates(models.CodeBreaker{Status: update.Status})
 	}
-}
-
-func DeleteStringSliceIndex(slice []string, index int) []string {
-	return append(slice[:index], slice[index+1:]...)
-}
-
-func SliceIndexOf(element string, data []string) int {
-	for k, v := range data {
-		if element == v {
-			return k
-		}
-	}
-	return -1 //not found.
 }
