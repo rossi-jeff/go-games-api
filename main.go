@@ -56,6 +56,9 @@ func main() {
 	// guess word controller
 	api.GET("/guess_word", controllers.GuessWordIndex)
 	api.GET("/guess_word/:id", controllers.GuessWordById)
+	api.POST("/guess_word", controllers.GuessWordCreate)
+	api.POST("/guess_word/:id/guess", controllers.GuessWordGuess)
+	api.POST("/guess_word/hint", controllers.GuessWordHints)
 	// hang man controller
 	api.GET("/hang_man", controllers.HangManIndex)
 	api.GET("/hang_man/:id", controllers.HangManById)

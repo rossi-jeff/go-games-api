@@ -11,13 +11,13 @@ type GuessWordGuessRating struct {
 type GuessWordGuessRatingJson struct {
 	BaseModel
 	GuessWordGuessId int64 `json:"guess_word_guess_id"`
-	Rating           string
+	Rating           enum.RatingString
 }
 
 func (g GuessWordGuessRating) Json() GuessWordGuessRatingJson {
 	return GuessWordGuessRatingJson{
 		BaseModel:        g.BaseModel,
 		GuessWordGuessId: g.GuessWordGuessId,
-		Rating:           g.Rating.String(),
+		Rating:           enum.RatingString(g.Rating.String()),
 	}
 }

@@ -10,6 +10,14 @@ const (
 	GREEN
 )
 
+type RatingString string
+
+const (
+	RS0 RatingString = "Gray"
+	RS1 RatingString = "Brown"
+	RS2 RatingString = "Green"
+)
+
 var RatingArray = [3]string{"Gray", "Brown", "Green"}
 
 func (r Rating) String() string {
