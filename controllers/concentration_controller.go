@@ -69,7 +69,7 @@ func ConcentrationCreate(c *gin.Context) {
 	concentration.UpdatedAt = now
 	initializers.DB.Save(&concentration)
 
-	c.JSON(http.StatusOK, concentration.Json())
+	c.JSON(http.StatusCreated, concentration.Json())
 }
 
 // @Summary      Update Concentration
@@ -92,9 +92,15 @@ func ConcentrationUpdate(c *gin.Context) {
 	}
 
 	concentration := models.Concentration{}
-	initializers.DB.First(&concentration, id)
+	initializers.DB.Select("id,created_at,user_id").Find(&concentration, id)
 
-	initializers.DB.Model(&concentration).Preload("User").Updates(&params)
+	concentration.Moves = params.Moves
+	concentration.Elapsed = params.Elapsed
+	concentration.Matched = params.Matched
+	concentration.Status = enum.GameStatus(enum.GameStatusArrayIndex(string(params.Status)))
+	concentration.UpdatedAt = time.Now().Format(time.RFC3339)
+
+	initializers.DB.Preload("User").Save(&concentration)
 
 	c.JSON(http.StatusOK, concentration.Json())
 }

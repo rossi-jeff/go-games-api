@@ -51,6 +51,8 @@ func main() {
 	// free cell controller
 	api.GET("/free_cell", controllers.FreeCellIndex)
 	api.GET("/free_cell/:id", controllers.FreeCellById)
+	api.POST("/free_cell", controllers.FreeCellCreate)
+	api.PATCH("/free_cell/:id", controllers.FreeCellUpdate)
 	// guess word controller
 	api.GET("/guess_word", controllers.GuessWordIndex)
 	api.GET("/guess_word/:id", controllers.GuessWordById)

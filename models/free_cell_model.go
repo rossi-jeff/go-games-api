@@ -4,10 +4,11 @@ import "go-games-api/enum"
 
 type FreeCell struct {
 	BaseModel
-	Status         enum.GameStatus
-	Moves, Elapsed int
-	UserId         int64 `json:"user_id"`
-	User           User  `json:"user,omitempty"`
+	Status  enum.GameStatus `gorm:"column:Status"`
+	Moves   int             `gorm:"column:Moves"`
+	Elapsed int             `gorm:"column:Elapsed"`
+	UserId  NullInt64       `json:"user_id" swaggerType:"string"`
+	User    User            `json:"user,omitempty"`
 }
 
 type FreeCellPaginated struct {
@@ -17,10 +18,11 @@ type FreeCellPaginated struct {
 
 type FreeCellJson struct {
 	BaseModel
-	Moves, Elapsed int
-	UserId         int64 `json:"user_id"`
-	User           User  `json:"user,omitempty"`
-	Status         string
+	Moves   int       `gorm:"column:Moves"`
+	Elapsed int       `gorm:"column:Elapsed"`
+	UserId  NullInt64 `json:"user_id" swaggerType:"string"`
+	User    User      `json:"user,omitempty"`
+	Status  enum.GameStatusString
 }
 
 func (f FreeCell) Json() FreeCellJson {
@@ -30,7 +32,7 @@ func (f FreeCell) Json() FreeCellJson {
 		Elapsed:   f.Elapsed,
 		UserId:    f.UserId,
 		User:      f.User,
-		Status:    f.Status.String(),
+		Status:    enum.GameStatusString(f.Status.String()),
 	}
 }
 
