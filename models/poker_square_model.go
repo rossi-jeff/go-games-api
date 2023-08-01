@@ -6,8 +6,8 @@ type PokerSquare struct {
 	BaseModel
 	Status enum.GameStatus
 	Score  int
-	UserId int64 `json:"user_id"`
-	User   User  `json:"user,omitempty"`
+	UserId NullInt64 `json:"user_id" swaggerType:"string"`
+	User   User      `json:"user,omitempty"`
 }
 
 type PokerSquarePaginated struct {
@@ -18,9 +18,9 @@ type PokerSquarePaginated struct {
 type PokerSquareJson struct {
 	BaseModel
 	Score  int
-	UserId int64 `json:"user_id"`
-	User   User  `json:"user,omitempty"`
-	Status string
+	UserId NullInt64 `json:"user_id" swaggerType:"string"`
+	User   User      `json:"user,omitempty"`
+	Status enum.GameStatusString
 }
 
 func (p PokerSquare) Json() PokerSquareJson {
@@ -29,7 +29,7 @@ func (p PokerSquare) Json() PokerSquareJson {
 		Score:     p.Score,
 		UserId:    p.UserId,
 		User:      p.User,
-		Status:    p.Status.String(),
+		Status:    enum.GameStatusString(p.Status.String()),
 	}
 }
 
