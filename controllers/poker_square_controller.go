@@ -4,6 +4,7 @@ import (
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
+	"go-games-api/payloads"
 	"go-games-api/utilities"
 	"net/http"
 	"time"
@@ -53,6 +54,13 @@ func PokerSquareById(c *gin.Context) {
 	c.JSON(http.StatusOK, pokerSquare.Json())
 }
 
+// @Summary      Create Poker Square
+// @Description  create a  poker square
+// @Tags         Poker Square
+// @Accept       json
+// @Produce      json
+// @Success      200  {object} models.PokerSquareJson
+// @Router       /api/poker_square [post]
 func PokerSquareCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
 	pokerSquare := models.PokerSquare{}
@@ -73,4 +81,23 @@ func PokerSquareCreate(c *gin.Context) {
 // @Param	data	body	payloads.PokerSquareUpdatePayload		true	"Poker Square Updates"
 // @Success      200  {object} models.PokerSquareJson
 // @Router       /api/poker_square/{Id} [patch]
-func PokerSquareUpdate(c *gin.Context) {}
+func PokerSquareUpdate(c *gin.Context) {
+	params := payloads.PokerSquareUpdatePayload{}
+	id := c.Param("id")
+
+	err := c.ShouldBindJSON(&params)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	now := time.Now().Format(time.RFC3339)
+	pokerSquare := models.PokerSquare{}
+	initializers.DB.Select("id,created_at,user_id").First(&pokerSquare, id)
+	pokerSquare.UpdatedAt = now
+	pokerSquare.Status = enum.GameStatus(enum.GameStatusArrayIndex(string(params.Status)))
+	pokerSquare.Score = params.Score
+	initializers.DB.Save(&pokerSquare)
+
+	c.JSON(http.StatusOK, pokerSquare.Json())
+}
