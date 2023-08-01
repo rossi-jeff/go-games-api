@@ -19,7 +19,7 @@ import (
 // @Produce      json
 // @Param	Limit	query	int	false	"Limit"
 // @Param	Offset	query	int	false	"Offset"
-// @Success      200  {object} models.FreeCellPaginated
+// @Success      200  {object} models.FreeCellPaginatedJson
 // @Router       /api/free_cell [get]
 func FreeCellIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
@@ -41,7 +41,7 @@ func FreeCellIndex(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param Id path int true "Free Cell ID"
-// @Success      200  {object} models.FreeCell
+// @Success      200  {object} models.FreeCellJson
 // @Router       /api/free_cell/{Id} [get]
 func FreeCellById(c *gin.Context) {
 	// get id
@@ -59,7 +59,7 @@ func FreeCellById(c *gin.Context) {
 // @Tags         Free Cell
 // @Accept       json
 // @Produce      json
-// @Success      201  {object} models.FreeCellPaginated
+// @Success      201  {object} models.FreeCellJson
 // @Router       /api/free_cell [post]
 func FreeCellCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
@@ -78,7 +78,7 @@ func FreeCellCreate(c *gin.Context) {
 // @Produce      json
 // @Param Id path int true "Free Cell ID"
 // @Param	data	body	payloads.FreeCellUpdatePayload		true	"Free Cell Updates"
-// @Success      200  {object} models.FreeCell
+// @Success      200  {object} models.FreeCellJson
 // @Router       /api/free_cell/{Id} [patch]
 func FreeCellUpdate(c *gin.Context) {
 	params := payloads.FreeCellUpdatePayload{}

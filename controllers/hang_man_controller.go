@@ -21,7 +21,7 @@ import (
 // @Produce      json
 // @Param	Limit	query	int	false	"Limit"
 // @Param	Offset	query	int	false	"Offset"
-// @Success      200  {object} models.HangManPaginated
+// @Success      200  {object} models.HangManPaginatedJson
 // @Router       /api/hang_man [get]
 func HangManIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
@@ -43,7 +43,7 @@ func HangManIndex(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param Id path int true "Hang Man ID"
-// @Success      200  {object} models.HangMan
+// @Success      200  {object} models.HangManJson
 // @Router       /api/hang_man/{Id} [get]
 func HangManById(c *gin.Context) {
 	// get id
@@ -62,7 +62,7 @@ func HangManById(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param	data	body	payloads.HangManCreatePayload		true	"Hang Man Options"
-// @Success      200  {object} models.HangManPaginated
+// @Success      200  {object} models.HangManJson
 // @Router       /api/hang_man [post]
 func HangManCreate(c *gin.Context) {
 	params := payloads.HangManCreatePayload{}

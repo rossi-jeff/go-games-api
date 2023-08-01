@@ -22,7 +22,7 @@ import (
 // @Produce      json
 // @Param	Limit	query	int	false	"Limit"
 // @Param	Offset	query	int	false	"Offset"
-// @Success      200  {object} models.CodeBreakerPaginated
+// @Success      200  {object} models.CodeBreakerPaginatedJson
 // @Router       /api/code_breaker [get]
 func CodeBreakerIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
@@ -44,7 +44,7 @@ func CodeBreakerIndex(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param Id path int true "Code Breaker ID"
-// @Success      200  {object} models.CodeBreaker
+// @Success      200  {object} models.CodeBreakerJson
 // @Router       /api/code_breaker/{Id} [get]
 func CodeBreakerById(c *gin.Context) {
 	// get id
@@ -64,7 +64,7 @@ func CodeBreakerById(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param	data	body	payloads.CodeBreakerCreatePayload		true	"Create Code Breaker Options"
-// @Success      201  {object} models.CodeBreaker
+// @Success      201  {object} models.CodeBreakerJson
 // @Router       /api/code_breaker [post]
 func CodeBreakerCreate(c *gin.Context) {
 	params := payloads.CodeBreakerCreatePayload{}
@@ -116,7 +116,7 @@ func CodeBreakerCreate(c *gin.Context) {
 // @Produce      json
 // @Param	data	body	payloads.CodeBreakerGuessPayload		true	"Code Breaker Guess"
 // @Param Id path int true "Code Breaker ID"
-// @Success      201  {object} models.CodeBreakerGuess
+// @Success      201  {object} models.CodeBreakerGuessJson
 // @Router       /api/code_breaker/{Id}/guess [post]
 func CodeBreakerGuess(c *gin.Context) {
 	params := payloads.CodeBreakerGuessPayload{}

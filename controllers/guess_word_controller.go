@@ -23,7 +23,7 @@ import (
 // @Produce      json
 // @Param	Limit	query	int	false	"Limit"
 // @Param	Offset	query	int	false	"Offset"
-// @Success      200  {object} models.GuessWordPaginated
+// @Success      200  {object} models.GuessWordPaginatedJson
 // @Router       /api/guess_word [get]
 func GuessWordIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
@@ -45,7 +45,7 @@ func GuessWordIndex(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param Id path int true "Guess Word ID"
-// @Success      200  {object} models.GuessWord
+// @Success      200  {object} models.GuessWordJson
 // @Router       /api/guess_word/{Id} [get]
 func GuessWordById(c *gin.Context) {
 	// get id
@@ -64,7 +64,7 @@ func GuessWordById(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param	data	body	payloads.GuesssWordCreatePayload		true	"Guess Word Options"
-// @Success      200  {object} models.GuessWord
+// @Success      200  {object} models.GuessWordJson
 // @Router       /api/guess_word [post]
 func GuessWordCreate(c *gin.Context) {
 	params := payloads.GuesssWordCreatePayload{}
@@ -100,7 +100,7 @@ func GuessWordCreate(c *gin.Context) {
 // @Produce      json
 // @Param Id path int true "Guess Word ID"
 // @Param	data	body	payloads.GuessWordGuessPayload		true	"Guess Options"
-// @Success      200  {object} models.GuessWord
+// @Success      200  {object} models.GuessWordJson
 // @Router       /api/guess_word/{Id}/guess [post]
 func GuessWordGuess(c *gin.Context) {
 	params := payloads.GuessWordGuessPayload{}

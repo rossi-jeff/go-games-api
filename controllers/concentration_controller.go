@@ -19,7 +19,7 @@ import (
 // @Produce      json
 // @Param	Limit	query	int	false	"Limit"
 // @Param	Offset	query	int	false	"Offset"
-// @Success      200  {object} models.ConcentrationPaginated
+// @Success      200  {object} models.ConcentrationPaginatedJson
 // @Router       /api/concentration [get]
 func ConcentrationIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
@@ -41,7 +41,7 @@ func ConcentrationIndex(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param Id path int true "Concentration ID"
-// @Success      200  {object} models.Concentration
+// @Success      200  {object} models.ConcentrationJson
 // @Router       /api/concentration/{Id} [get]
 func ConcentrationById(c *gin.Context) {
 	// get id
@@ -59,7 +59,7 @@ func ConcentrationById(c *gin.Context) {
 // @Tags         Concentration
 // @Accept       json
 // @Produce      json
-// @Success      201  {object} models.Concentration
+// @Success      201  {object} models.ConcentrationJson
 // @Router       /api/concentration [post]
 func ConcentrationCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
@@ -79,7 +79,7 @@ func ConcentrationCreate(c *gin.Context) {
 // @Produce      json
 // @Param Id path int true "Concentration ID"
 // @Param	data	body	payloads.ConcentrationUpdatePayload		true	"Concentration Updates"
-// @Success      200  {object} models.Concentration
+// @Success      200  {object} models.ConcentrationJson
 // @Router       /api/concentration/{Id} [patch]
 func ConcentrationUpdate(c *gin.Context) {
 	params := payloads.ConcentrationUpdatePayload{}

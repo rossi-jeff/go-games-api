@@ -11,13 +11,13 @@ type CodeBreakerGuessKey struct {
 type CodeBreakerGuessKeyJson struct {
 	BaseModel
 	CodeBreakerGuessId int64 `json:"code_breaker_guess_id"`
-	Key                string
+	Key                enum.KeyString
 }
 
 func (c CodeBreakerGuessKey) Json() CodeBreakerGuessKeyJson {
 	return CodeBreakerGuessKeyJson{
 		BaseModel:          c.BaseModel,
 		CodeBreakerGuessId: c.CodeBreakerGuessId,
-		Key:                c.Key.String(),
+		Key:                enum.KeyString(c.Key.String()),
 	}
 }

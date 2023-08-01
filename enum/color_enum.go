@@ -16,6 +16,20 @@ const (
 	Yellow
 )
 
+type ColorString string
+
+const (
+	C0 ColorString = "Black"
+	C1 ColorString = "Blue"
+	C2 ColorString = "Brown"
+	C3 ColorString = "Green"
+	C4 ColorString = "Orange"
+	C5 ColorString = "Purple"
+	C6 ColorString = "Red"
+	C7 ColorString = "White"
+	C8 ColorString = "Yellow"
+)
+
 var ColorArray = [...]string{"Black", "Blue", "Brown", "Green", "Orange", "Purple", "Red", "White", "Yellow"}
 
 func (c Color) String() string {
