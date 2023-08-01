@@ -67,6 +67,8 @@ func main() {
 	// klondike controller
 	api.GET("/klondike", controllers.KlondikeIndex)
 	api.GET("/klondike/:id", controllers.KlondikeById)
+	api.POST("/klondike", controllers.KlondikeCreate)
+	api.PATCH("/klondike/:id", controllers.KlondikeUpdate)
 	// poker square controller
 	api.GET("/poker_square", controllers.PokerSquareIndex)
 	api.GET("/poker_square/:id", controllers.PokerSquareById)
