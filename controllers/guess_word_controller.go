@@ -155,6 +155,10 @@ func GuessWordHints(c *gin.Context) {
 	}
 
 	rows, err := initializers.DB.Model(&models.Word{}).Select("Word").Where("Length = ?", params.Length).Rows()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	defer rows.Close()
 
 	var hints []string
@@ -214,9 +218,7 @@ func includeAllBrown(Word string, brown [][]string) bool {
 	word := strings.Split(Word, "")
 	var allBrown []string
 	for _, row := range brown {
-		for _, val := range row {
-			allBrown = append(allBrown, val)
-		}
+		allBrown = append(allBrown, row...)
 	}
 	if len(allBrown) == 0 {
 		return true
