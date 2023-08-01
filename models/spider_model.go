@@ -4,18 +4,22 @@ import "go-games-api/enum"
 
 type Spider struct {
 	BaseModel
-	Status                enum.GameStatus
-	Moves, Elapsed, Suits int
-	UserId                int64 `json:"user_id"`
-	User                  User  `json:"user,omitempty"`
+	Status  enum.GameStatus
+	Moves   int
+	Elapsed int
+	Suits   enum.Suit
+	UserId  NullInt64 `json:"user_id" swaggerType:"string"`
+	User    User      `json:"user,omitempty"`
 }
 
 type SpiderJson struct {
 	BaseModel
-	Moves, Elapsed, Suits int
-	UserId                int64 `json:"user_id"`
-	User                  User  `json:"user,omitempty"`
-	Status                string
+	Moves   int
+	Elapsed int
+	Suits   enum.Suit
+	UserId  NullInt64 `json:"user_id" swaggerType:"string"`
+	User    User      `json:"user,omitempty"`
+	Status  enum.GameStatusString
 }
 
 func (s Spider) Json() SpiderJson {
@@ -26,7 +30,7 @@ func (s Spider) Json() SpiderJson {
 		Suits:     s.Suits,
 		UserId:    s.UserId,
 		User:      s.User,
-		Status:    s.Status.String(),
+		Status:    enum.GameStatusString(s.Status.String()),
 	}
 }
 

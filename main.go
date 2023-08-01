@@ -83,6 +83,8 @@ func main() {
 	// spider controller
 	api.GET("/spider", controllers.SpiderIndex)
 	api.GET("/spider/:id", controllers.SpiderById)
+	api.POST("/spider", controllers.SpiderCreate)
+	api.PATCH("/spider/:id", controllers.SpiderUpdate)
 	// ten grand controller
 	api.GET("/ten_grand", controllers.TenGrandIndex)
 	api.GET("/ten_grand/:id", controllers.TenGrandById)
