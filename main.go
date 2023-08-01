@@ -77,6 +77,9 @@ func main() {
 	// sea battle controller
 	api.GET("/sea_battle", controllers.SeaBattleIndex)
 	api.GET("/sea_battle/:id", controllers.SeaBattleById)
+	api.POST("/sea_battle", controllers.SeaBattleCreate)
+	api.POST("/sea_battle/:id/ship", controllers.SeaBattleShip)
+	api.POST("/sea_battle/:id/fire", controllers.SeaBattleFire)
 	// spider controller
 	api.GET("/spider", controllers.SpiderIndex)
 	api.GET("/spider/:id", controllers.SpiderById)

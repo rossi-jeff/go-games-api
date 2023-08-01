@@ -6,7 +6,7 @@ type SeaBattle struct {
 	BaseModel
 	Status      enum.GameStatus
 	Score, Axis int
-	UserId      int64           `json:"user_id"`
+	UserId      NullInt64       `json:"user_id" swaggerType:"string"`
 	User        User            `json:"user,omitempty"`
 	Ships       []SeaBattleShip `json:"ships"`
 	Turns       []SeaBattleTurn `json:"turns"`
@@ -15,9 +15,9 @@ type SeaBattle struct {
 type SeaBattleJson struct {
 	BaseModel
 	Score, Axis int
-	UserId      int64 `json:"user_id"`
-	User        User  `json:"user,omitempty"`
-	Status      string
+	UserId      NullInt64 `json:"user_id" swaggerType:"string"`
+	User        User      `json:"user,omitempty"`
+	Status      enum.GameStatusString
 	Ships       []SeaBattleShipJson `json:"ships"`
 	Turns       []SeaBattleTurnJson `json:"turns"`
 }
@@ -29,7 +29,7 @@ func (s SeaBattle) Json() SeaBattleJson {
 		Axis:      s.Axis,
 		UserId:    s.UserId,
 		User:      s.User,
-		Status:    s.Status.String(),
+		Status:    enum.GameStatusString(s.Status.String()),
 	}
 	if len(s.Ships) > 0 {
 		for i := 0; i < len(s.Ships); i++ {
