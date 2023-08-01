@@ -4,7 +4,7 @@ import "go-games-api/enum"
 
 type SeaBattleTurn struct {
 	BaseModel
-	ShipType    enum.ShipType
+	ShipType    enum.ShipType `gorm:"column:ShipType"`
 	Navy        enum.Navy
 	Target      enum.Target
 	Horizontal  string
@@ -16,10 +16,10 @@ type SeaBattleTurnJson struct {
 	BaseModel
 	Horizontal  string
 	Vertical    int
-	SeaBattleId int64 `json:"sea_battle_id"`
-	ShipType    string
-	Navy        string
-	Target      string
+	SeaBattleId int64               `json:"sea_battle_id"`
+	ShipType    enum.ShipTypeString `gorm:"column:ShipType"`
+	Navy        enum.NavyString
+	Target      enum.TargetString
 }
 
 func (s SeaBattleTurn) Json() SeaBattleTurnJson {
@@ -28,8 +28,8 @@ func (s SeaBattleTurn) Json() SeaBattleTurnJson {
 		Horizontal:  s.Horizontal,
 		Vertical:    s.Vertical,
 		SeaBattleId: s.SeaBattleId,
-		ShipType:    s.ShipType.String(),
-		Navy:        s.Navy.String(),
-		Target:      s.Target.String(),
+		ShipType:    enum.ShipTypeString(s.ShipType.String()),
+		Navy:        enum.NavyString(s.Navy.String()),
+		Target:      enum.TargetString(s.Target.String()),
 	}
 }

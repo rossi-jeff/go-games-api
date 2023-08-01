@@ -10,6 +10,14 @@ const (
 	Sunk
 )
 
+type TargetString string
+
+const (
+	T0 TargetString = "Miss"
+	T1 TargetString = "Hit"
+	T2 TargetString = "Sunk"
+)
+
 var TargetArray = [3]string{"Miss", "Hit", "Sunk"}
 
 func (t Target) String() string {

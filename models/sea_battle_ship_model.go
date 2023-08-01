@@ -20,8 +20,8 @@ type SeaBattleShipJson struct {
 	SeaBattleId int64                    `json:"sea_battle_id"`
 	Points      []SeaBattleShipGridPoint `json:"points"`
 	Hits        []SeaBattleShipHit       `json:"hits"`
-	Type        string
-	Navy        string
+	Type        enum.ShipTypeString
+	Navy        enum.NavyString
 }
 
 func (s SeaBattleShip) Json() SeaBattleShipJson {
@@ -32,7 +32,7 @@ func (s SeaBattleShip) Json() SeaBattleShipJson {
 		SeaBattleId: s.SeaBattleId,
 		Points:      s.Points,
 		Hits:        s.Hits,
-		Type:        s.Type.String(),
-		Navy:        s.Navy.String(),
+		Type:        enum.ShipTypeString(s.Type.String()),
+		Navy:        enum.NavyString(s.Navy.String()),
 	}
 }

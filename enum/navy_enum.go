@@ -9,6 +9,13 @@ const (
 	Opponent
 )
 
+type NavyString string
+
+const (
+	N0 NavyString = "Player"
+	N1 NavyString = "Opponent"
+)
+
 var NavyArray = [2]string{"Player", "Opponent"}
 
 func (n Navy) String() string {
