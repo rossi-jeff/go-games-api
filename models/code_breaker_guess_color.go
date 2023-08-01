@@ -11,13 +11,13 @@ type CodeBreakerGuessColor struct {
 type CodeBreakerGuessColorJson struct {
 	BaseModel
 	CodeBreakerGuessId int64 `json:"code_breaker_guess_id"`
-	Color              string
+	Color              enum.ColorString
 }
 
 func (c CodeBreakerGuessColor) Json() CodeBreakerGuessColorJson {
 	return CodeBreakerGuessColorJson{
 		BaseModel:          c.BaseModel,
 		CodeBreakerGuessId: c.CodeBreakerGuessId,
-		Color:              c.Color.String(),
+		Color:              enum.ColorString(c.Color.String()),
 	}
 }
