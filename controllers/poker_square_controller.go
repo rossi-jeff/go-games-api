@@ -1,10 +1,13 @@
 package controllers
 
 import (
+	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
+	"go-games-api/payloads"
 	"go-games-api/utilities"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +19,7 @@ import (
 // @Produce      json
 // @Param	Limit	query	int	false	"Limit"
 // @Param	Offset	query	int	false	"Offset"
-// @Success      200  {object} models.PokerSquarePaginated
+// @Success      200  {object} models.PokerSquarePaginatedJson
 // @Router       /api/poker_square [get]
 func PokerSquareIndex(c *gin.Context) {
 	params := utilities.ParseIndexParams(c)
@@ -38,7 +41,7 @@ func PokerSquareIndex(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param Id path int true "Poker Square ID"
-// @Success      200  {object} models.PokerSquare
+// @Success      200  {object} models.PokerSquareJson
 // @Router       /api/poker_square/{Id} [get]
 func PokerSquareById(c *gin.Context) {
 	// get id
@@ -48,5 +51,53 @@ func PokerSquareById(c *gin.Context) {
 	initializers.DB.Preload("User").First(&pokerSquare, id)
 
 	// response
+	c.JSON(http.StatusOK, pokerSquare.Json())
+}
+
+// @Summary      Create Poker Square
+// @Description  create a  poker square
+// @Tags         Poker Square
+// @Accept       json
+// @Produce      json
+// @Success      200  {object} models.PokerSquareJson
+// @Router       /api/poker_square [post]
+func PokerSquareCreate(c *gin.Context) {
+	now := time.Now().Format(time.RFC3339)
+	pokerSquare := models.PokerSquare{}
+	pokerSquare.Status = enum.Playing
+	pokerSquare.CreatedAt = now
+	pokerSquare.UpdatedAt = now
+	initializers.DB.Save(&pokerSquare)
+
+	c.JSON(http.StatusCreated, pokerSquare.Json())
+}
+
+// @Summary      Update PokerSquare
+// @Description  get a PokerSquare
+// @Tags         Poker Square
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "PokerSquare ID"
+// @Param	data	body	payloads.PokerSquareUpdatePayload		true	"Poker Square Updates"
+// @Success      200  {object} models.PokerSquareJson
+// @Router       /api/poker_square/{Id} [patch]
+func PokerSquareUpdate(c *gin.Context) {
+	params := payloads.PokerSquareUpdatePayload{}
+	id := c.Param("id")
+
+	err := c.ShouldBindJSON(&params)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	now := time.Now().Format(time.RFC3339)
+	pokerSquare := models.PokerSquare{}
+	initializers.DB.Select("id,created_at,user_id").First(&pokerSquare, id)
+	pokerSquare.UpdatedAt = now
+	pokerSquare.Status = enum.GameStatus(enum.GameStatusArrayIndex(string(params.Status)))
+	pokerSquare.Score = params.Score
+	initializers.DB.Save(&pokerSquare)
+
 	c.JSON(http.StatusOK, pokerSquare.Json())
 }

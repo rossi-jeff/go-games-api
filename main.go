@@ -72,6 +72,8 @@ func main() {
 	// poker square controller
 	api.GET("/poker_square", controllers.PokerSquareIndex)
 	api.GET("/poker_square/:id", controllers.PokerSquareById)
+	api.POST("/poker_square", controllers.PokerSquareCreate)
+	api.PATCH("/poker_square/:id", controllers.PokerSquareUpdate)
 	// sea battle controller
 	api.GET("/sea_battle", controllers.SeaBattleIndex)
 	api.GET("/sea_battle/:id", controllers.SeaBattleById)
