@@ -1,6 +1,15 @@
 package utilities
 
+import (
+	"strconv"
+	"strings"
+)
+
 func DeleteStringSliceIndex(slice []string, index int) []string {
+	return append(slice[:index], slice[index+1:]...)
+}
+
+func DeleteIntSliceIndex(slice []int, index int) []int {
 	return append(slice[:index], slice[index+1:]...)
 }
 
@@ -31,4 +40,12 @@ func IntSliceIndexOf(element int, data []int) int {
 		}
 	}
 	return -1 //not found.
+}
+
+func IntSliceJoin(data []int, delimiter string) string {
+	var str []string
+	for _, v := range data {
+		str = append(str, strconv.Itoa(v))
+	}
+	return strings.Join(str, delimiter)
 }
