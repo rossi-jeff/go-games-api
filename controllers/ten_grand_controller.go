@@ -3,7 +3,9 @@ package controllers
 import (
 	"go-games-api/initializers"
 	"go-games-api/models"
+	"go-games-api/payloads"
 	"go-games-api/utilities"
+	"math/rand"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -51,3 +53,28 @@ func TenGrandById(c *gin.Context) {
 	// response
 	c.JSON(http.StatusOK, tenGrand.Json())
 }
+
+func TenGrandCreate(c *gin.Context) {
+}
+
+func TenGrandRoll(c *gin.Context) {
+	params := payloads.TenGrandRollPayload{}
+
+	err := c.ShouldBindJSON(&params)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var dice []int
+	for i := 0; i < params.Quantity; i++ {
+		roll := rand.Intn(6) + 1
+		dice = append(dice, roll)
+	}
+
+	c.JSON(http.StatusOK, dice)
+}
+
+func TenGrandOptions(c *gin.Context) {}
+
+func TenGrandScore(c *gin.Context) {}

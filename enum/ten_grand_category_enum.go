@@ -19,6 +19,22 @@ const (
 	SixKind
 )
 
+type TenGrandCategoryString string
+
+const (
+	TG0 TenGrandCategoryString = "CrapOut"
+	TG1 TenGrandCategoryString = "Ones"
+	TG2 TenGrandCategoryString = "Fives"
+	TG3 TenGrandCategoryString = "ThreePairs"
+	TG4 TenGrandCategoryString = "Straight"
+	TG5 TenGrandCategoryString = "FullHouse"
+	TG6 TenGrandCategoryString = "DoubleThreeKind"
+	TG7 TenGrandCategoryString = "ThreeKind"
+	TG8 TenGrandCategoryString = "FourKind"
+	TG9 TenGrandCategoryString = "FiveKind"
+	TGA TenGrandCategoryString = "SixKind"
+)
+
 var TenGrandCategoryArray = [...]string{"CrapOut", "Ones", "Fives", "ThreePairs", "Straight", "FullHouse", "DoubleThreeKind", "ThreeKind", "FourKind", "FiveKind", "SixKind"}
 
 func (t TenGrandCategory) String() string {
