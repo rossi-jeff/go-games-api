@@ -88,6 +88,10 @@ func main() {
 	// ten grand controller
 	api.GET("/ten_grand", controllers.TenGrandIndex)
 	api.GET("/ten_grand/:id", controllers.TenGrandById)
+	api.POST("/ten_grand", controllers.TenGrandCreate)
+	api.POST("/ten_grand/:id/roll", controllers.TenGrandRoll)
+	api.POST("/ten_grand/options", controllers.TenGrandOptions)
+	api.POST("/ten_grand/:id/score", controllers.TenGrandScore)
 	// yacht controller
 	api.GET("/yacht", controllers.YachtIndex)
 	api.GET("/yacht/:id", controllers.YachtById)
