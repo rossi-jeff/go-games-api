@@ -13,7 +13,7 @@ func YachtCatagorySkip(id int64) []string {
 	turns := []models.YachtTurn{}
 	initializers.DB.Where("yacht_id = ? and Category IS NOT NULL", id).Select("Category").Find(&turns)
 	for i := 0; i < len(turns); i++ {
-		category := turns[i].Category.String()
+		category := models.YachtCategoryJson(turns[i].Category)
 		skip = append(skip, category)
 	}
 	return skip

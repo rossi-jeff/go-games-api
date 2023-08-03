@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"database/sql"
+	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
 	"go-games-api/payloads"
@@ -104,6 +106,7 @@ func YachtRoll(c *gin.Context) {
 	yacht := models.Yacht{}
 	initializers.DB.First(&yacht, id)
 
+	now := time.Now().Format(time.RFC3339)
 	turn := models.YachtTurn{}
 	initializers.DB.Where("yacht_id = ? AND Category IS NULL", id).Order("id DESC").First(&turn)
 	if turn.Id > 0 {
@@ -115,7 +118,9 @@ func YachtRoll(c *gin.Context) {
 	} else {
 		turn.RollOne = utilities.IntSliceJoin(dice, ",")
 		turn.YachtId = int64(yacht.Id)
+		turn.CreatedAt = now
 	}
+	turn.UpdatedAt = now
 
 	skip := utilities.YachtCatagorySkip(int64(yacht.Id))
 	options := utilities.YachtScoreOptions(dice, skip)
@@ -155,7 +160,44 @@ func YachtScore(c *gin.Context) {
 	yacht := models.Yacht{}
 	initializers.DB.First(&yacht, id)
 
+	now := time.Now().Format(time.RFC3339)
 	turn := models.YachtTurn{}
+	initializers.DB.First(&turn, params.TurnId)
+	var dice []int
+	category := string(params.Category)
+	if turn.RollThree != "" {
+		dice = utilities.StringToIntSlice(turn.RollThree, ",")
+	} else if turn.RollTwo != "" {
+		dice = utilities.StringToIntSlice(turn.RollTwo, ",")
+	} else {
+		dice = utilities.StringToIntSlice(turn.RollOne, ",")
+	}
+	turn.Category = sql.NullInt32{Int32: int32(enum.YachtCategoryArrayIndex(category)), Valid: true}
+	turn.Score = utilities.ScoreYachtCategory(category, dice)
+	turn.UpdatedAt = now
+
+	initializers.DB.Save(&turn)
+
+	updateYachtTotal(int64(yacht.Id))
 
 	c.JSON(http.StatusOK, turn.Json())
+}
+
+func updateYachtTotal(id int64) {
+	turns := []models.YachtTurn{}
+	initializers.DB.Where("yacht_id = ? and Category IS NOT NULL", id).Select("Score").Find(&turns)
+
+	total := 0
+	for i := 0; i < len(turns); i++ {
+		total = total + turns[i].Score
+	}
+
+	yacht := models.Yacht{}
+	initializers.DB.First(&yacht, id)
+
+	yacht.NumTurns = len(turns)
+	yacht.Total = total
+	yacht.UpdatedAt = time.Now().Format(time.RFC3339)
+
+	initializers.DB.Save(&yacht)
 }

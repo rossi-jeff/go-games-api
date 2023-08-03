@@ -18,10 +18,10 @@ type FreeCellPaginated struct {
 
 type FreeCellJson struct {
 	BaseModel
-	Moves   int       `gorm:"column:Moves"`
-	Elapsed int       `gorm:"column:Elapsed"`
-	UserId  NullInt64 `json:"user_id" swaggerType:"string"`
-	User    User      `json:"user,omitempty"`
+	Moves   int   `gorm:"column:Moves"`
+	Elapsed int   `gorm:"column:Elapsed"`
+	UserId  int64 `json:"user_id" swaggerType:"string"`
+	User    User  `json:"user,omitempty"`
 	Status  enum.GameStatusString
 }
 
@@ -30,7 +30,7 @@ func (f FreeCell) Json() FreeCellJson {
 		BaseModel: f.BaseModel,
 		Moves:     f.Moves,
 		Elapsed:   f.Elapsed,
-		UserId:    f.UserId,
+		UserId:    NullInt64Value(f.UserId),
 		User:      f.User,
 		Status:    enum.GameStatusString(f.Status.String()),
 	}

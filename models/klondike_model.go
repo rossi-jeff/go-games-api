@@ -18,8 +18,8 @@ type KlondikePaginated struct {
 type KlondikeJson struct {
 	BaseModel
 	Moves, Elapsed int
-	UserId         NullInt64 `json:"user_id" swaggerType:"string"`
-	User           User      `json:"user,omitempty"`
+	UserId         int64 `json:"user_id" swaggerType:"string"`
+	User           User  `json:"user,omitempty"`
 	Status         enum.GameStatusString
 }
 
@@ -28,7 +28,7 @@ func (k Klondike) Json() KlondikeJson {
 		BaseModel: k.BaseModel,
 		Moves:     k.Moves,
 		Elapsed:   k.Elapsed,
-		UserId:    k.UserId,
+		UserId:    NullInt64Value(k.UserId),
 		User:      k.User,
 		Status:    enum.GameStatusString(k.Status.String()),
 	}

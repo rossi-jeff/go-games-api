@@ -22,10 +22,10 @@ type HangManJson struct {
 	BaseModel
 	Correct, Wrong string
 	Score          int
-	UserId         NullInt64 `json:"user_id" swaggerType:"string"`
-	User           User      `json:"user,omitempty"`
-	WordId         NullInt64 `json:"word_id" swaggerType:"string"`
-	Word           Word      `json:"word,omitempty"`
+	UserId         int64 `json:"user_id" swaggerType:"string"`
+	User           User  `json:"user,omitempty"`
+	WordId         int64 `json:"word_id" swaggerType:"string"`
+	Word           Word  `json:"word,omitempty"`
 	Status         enum.GameStatusString
 }
 
@@ -35,9 +35,9 @@ func (h HangMan) Json() HangManJson {
 		Correct:   h.Correct,
 		Wrong:     h.Wrong,
 		Score:     h.Score,
-		UserId:    h.UserId,
+		UserId:    NullInt64Value(h.UserId),
 		User:      h.User,
-		WordId:    h.WordId,
+		WordId:    NullInt64Value(h.WordId),
 		Word:      h.Word,
 		Status:    enum.GameStatusString(h.Status.String()),
 	}

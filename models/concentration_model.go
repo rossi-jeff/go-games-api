@@ -19,11 +19,11 @@ type ConcentrationPaginated struct {
 
 type ConcentrationJson struct {
 	BaseModel
-	Moves   int       `gorm:"column:Moves"`
-	Matched int       `gorm:"column:Matched"`
-	Elapsed int       `gorm:"column:Elapsed"`
-	UserId  NullInt64 `json:"user_id" swaggerType:"string"`
-	User    User      `json:"user,omitempty"`
+	Moves   int   `gorm:"column:Moves"`
+	Matched int   `gorm:"column:Matched"`
+	Elapsed int   `gorm:"column:Elapsed"`
+	UserId  int64 `json:"user_id" swaggerType:"string"`
+	User    User  `json:"user,omitempty"`
 	Status  enum.GameStatusString
 }
 
@@ -33,7 +33,7 @@ func (c Concentration) Json() ConcentrationJson {
 		Moves:     c.Moves,
 		Matched:   c.Matched,
 		Elapsed:   c.Elapsed,
-		UserId:    c.UserId,
+		UserId:    NullInt64Value(c.UserId),
 		User:      c.User,
 		Status:    enum.GameStatusString(c.Status.String()),
 	}

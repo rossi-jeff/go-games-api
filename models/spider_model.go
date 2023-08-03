@@ -17,8 +17,8 @@ type SpiderJson struct {
 	Moves   int
 	Elapsed int
 	Suits   enum.Suit
-	UserId  NullInt64 `json:"user_id" swaggerType:"string"`
-	User    User      `json:"user,omitempty"`
+	UserId  int64 `json:"user_id" swaggerType:"string"`
+	User    User  `json:"user,omitempty"`
 	Status  enum.GameStatusString
 }
 
@@ -28,7 +28,7 @@ func (s Spider) Json() SpiderJson {
 		Moves:     s.Moves,
 		Elapsed:   s.Elapsed,
 		Suits:     s.Suits,
-		UserId:    s.UserId,
+		UserId:    NullInt64Value(s.UserId),
 		User:      s.User,
 		Status:    enum.GameStatusString(s.Status.String()),
 	}
