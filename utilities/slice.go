@@ -49,3 +49,16 @@ func IntSliceJoin(data []int, delimiter string) string {
 	}
 	return strings.Join(str, delimiter)
 }
+
+func StringToIntSlice(str string, delimiter string) []int {
+	var data []int
+	parts := strings.Split(str, delimiter)
+	for _, v := range parts {
+		val, err := strconv.Atoi(v)
+		if err == nil {
+			data = append(data, val)
+		}
+	}
+
+	return data
+}

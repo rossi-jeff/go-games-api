@@ -2,18 +2,20 @@ package models
 
 type Yacht struct {
 	BaseModel
-	Total, NumTurns int
-	UserId          int64       `json:"user_id"`
-	User            User        `json:"user,omitempty"`
-	Turns           []YachtTurn `json:"turns,omitempty"`
+	Total    int
+	NumTurns int         `gorm:"column:NumTurns"`
+	UserId   NullInt64   `json:"user_id" swaggerType:"string"`
+	User     User        `json:"user,omitempty"`
+	Turns    []YachtTurn `json:"turns,omitempty"`
 }
 
 type YachtJson struct {
 	BaseModel
-	Total, NumTurns int
-	UserId          int64           `json:"user_id"`
-	User            User            `json:"user,omitempty"`
-	Turns           []YachtTurnJson `json:"turns,omitempty"`
+	Total    int
+	NumTurns int             `gorm:"column:NumTurns"`
+	UserId   int64           `json:"user_id" swaggerType:"string"`
+	User     User            `json:"user,omitempty"`
+	Turns    []YachtTurnJson `json:"turns,omitempty"`
 }
 
 func (y Yacht) Json() YachtJson {
@@ -21,7 +23,7 @@ func (y Yacht) Json() YachtJson {
 		BaseModel: y.BaseModel,
 		Total:     y.Total,
 		NumTurns:  y.NumTurns,
-		UserId:    y.UserId,
+		UserId:    NullInt64Value(y.UserId),
 		User:      y.User,
 	}
 	if len(y.Turns) > 0 {

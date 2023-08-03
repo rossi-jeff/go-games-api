@@ -15,8 +15,8 @@ type SeaBattle struct {
 type SeaBattleJson struct {
 	BaseModel
 	Score, Axis int
-	UserId      NullInt64 `json:"user_id" swaggerType:"string"`
-	User        User      `json:"user,omitempty"`
+	UserId      int64 `json:"user_id" swaggerType:"string"`
+	User        User  `json:"user,omitempty"`
 	Status      enum.GameStatusString
 	Ships       []SeaBattleShipJson `json:"ships"`
 	Turns       []SeaBattleTurnJson `json:"turns"`
@@ -27,7 +27,7 @@ func (s SeaBattle) Json() SeaBattleJson {
 		BaseModel: s.BaseModel,
 		Score:     s.Score,
 		Axis:      s.Axis,
-		UserId:    s.UserId,
+		UserId:    NullInt64Value(s.UserId),
 		User:      s.User,
 		Status:    enum.GameStatusString(s.Status.String()),
 	}

@@ -95,6 +95,9 @@ func main() {
 	// yacht controller
 	api.GET("/yacht", controllers.YachtIndex)
 	api.GET("/yacht/:id", controllers.YachtById)
+	api.POST("/yacht", controllers.YachtCreate)
+	api.POST("/yacht/:id/roll", controllers.YachtRoll)
+	api.POST("/yacht/:id/score", controllers.YachtScore)
 
 	router.Run()
 }
