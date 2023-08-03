@@ -4,18 +4,22 @@ import "go-games-api/enum"
 
 type YachtTurn struct {
 	BaseModel
-	RollOne, RollTwo, RollThree string
-	Category                    enum.YachtCategory
-	Score                       int
-	YachtId                     int64 `json:"yacht_id"`
+	RollOne   string
+	RollTwo   string
+	RollThree string
+	Category  enum.YachtCategory
+	Score     int
+	YachtId   int64 `json:"yacht_id"`
 }
 
 type YachtTurnJson struct {
 	BaseModel
-	RollOne, RollTwo, RollThree string
-	Score                       int
-	YachtId                     int64 `json:"yacht_id"`
-	Category                    string
+	RollOne   string
+	RollTwo   string
+	RollThree string
+	Score     int
+	YachtId   int64 `json:"yacht_id"`
+	Category  enum.YachtCategoryString
 }
 
 func (y YachtTurn) Json() YachtTurnJson {
@@ -26,6 +30,6 @@ func (y YachtTurn) Json() YachtTurnJson {
 		RollThree: y.RollThree,
 		Score:     y.Score,
 		YachtId:   y.YachtId,
-		Category:  y.Category.String(),
+		Category:  enum.YachtCategoryString(y.Category.String()),
 	}
 }

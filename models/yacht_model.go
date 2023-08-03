@@ -2,18 +2,20 @@ package models
 
 type Yacht struct {
 	BaseModel
-	Total, NumTurns int
-	UserId          int64       `json:"user_id"`
-	User            User        `json:"user,omitempty"`
-	Turns           []YachtTurn `json:"turns,omitempty"`
+	Total    int
+	NumTurns int
+	UserId   NullInt64   `json:"user_id" swaggerType:"string"`
+	User     User        `json:"user,omitempty"`
+	Turns    []YachtTurn `json:"turns,omitempty"`
 }
 
 type YachtJson struct {
 	BaseModel
-	Total, NumTurns int
-	UserId          int64           `json:"user_id"`
-	User            User            `json:"user,omitempty"`
-	Turns           []YachtTurnJson `json:"turns,omitempty"`
+	Total    int
+	NumTurns int
+	UserId   NullInt64       `json:"user_id" swaggerType:"string"`
+	User     User            `json:"user,omitempty"`
+	Turns    []YachtTurnJson `json:"turns,omitempty"`
 }
 
 func (y Yacht) Json() YachtJson {
