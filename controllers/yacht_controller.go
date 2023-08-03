@@ -5,7 +5,9 @@ import (
 	"go-games-api/models"
 	"go-games-api/payloads"
 	"go-games-api/utilities"
+	"math/rand"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -53,6 +55,13 @@ func YachtById(c *gin.Context) {
 	c.JSON(http.StatusOK, yacht.Json())
 }
 
+// @Summary      Create Yacht
+// @Description  create a yacht
+// @Tags         Yacht
+// @Accept       json
+// @Produce      json
+// @Success      200  {object} models.YachtJson
+// @Router       /api/yacht [post]
 func YachtCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
 	yacht := models.Yacht{}
@@ -63,6 +72,15 @@ func YachtCreate(c *gin.Context) {
 	c.JSON(http.StatusCreated, yacht.Json())
 }
 
+// @Summary      Yacht roll
+// @Description  roll yacht dice
+// @Tags         Yacht
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Yacht ID"
+// @Param	data	body	payloads.YachtRollPayload		true	"Yacht Options"
+// @Success      200  {object} payloads.YachtRollResponse
+// @Router       /api/yacht/{Id}/roll [post]
 func YachtRoll(c *gin.Context) {
 	params := payloads.YachtRollPayload{}
 	id := c.Param("id")
@@ -73,10 +91,57 @@ func YachtRoll(c *gin.Context) {
 		return
 	}
 
+	var dice []int
+	for i := 0; i < len(params.Keep); i++ {
+		face := params.Keep[i]
+		dice = append(dice, face)
+	}
+	for len(dice) < 5 {
+		roll := rand.Intn(6) + 1
+		dice = append(dice, roll)
+	}
+
 	yacht := models.Yacht{}
 	initializers.DB.First(&yacht, id)
+
+	turn := models.YachtTurn{}
+	initializers.DB.Where("yacht_id = ? AND Category IS NULL", id).Order("id DESC").First(&turn)
+	if turn.Id > 0 {
+		if turn.RollTwo != "" {
+			turn.RollThree = utilities.IntSliceJoin(dice, ",")
+		} else {
+			turn.RollTwo = utilities.IntSliceJoin(dice, ",")
+		}
+	} else {
+		turn.RollOne = utilities.IntSliceJoin(dice, ",")
+		turn.YachtId = int64(yacht.Id)
+	}
+
+	skip := utilities.YachtCatagorySkip(int64(yacht.Id))
+	options := utilities.YachtScoreOptions(dice, skip)
+
+	sort.Slice(options, func(i, j int) bool {
+		return options[j].Score < options[i].Score
+	})
+
+	initializers.DB.Save(&turn)
+
+	response := payloads.YachtRollResponse{}
+	response.Turn = turn.Json()
+	response.Options = options
+
+	c.JSON(http.StatusOK, response)
 }
 
+// @Summary      Yacht roll
+// @Description  roll yacht dice
+// @Tags         Yacht
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Yacht ID"
+// @Param	data	body	payloads.YachtScorePayload		true	"Yacht Options"
+// @Success      200  {object} models.YachtTurnJson
+// @Router       /api/yacht/{Id}/score [post]
 func YachtScore(c *gin.Context) {
 	params := payloads.YachtScorePayload{}
 	id := c.Param("id")
@@ -89,4 +154,8 @@ func YachtScore(c *gin.Context) {
 
 	yacht := models.Yacht{}
 	initializers.DB.First(&yacht, id)
+
+	turn := models.YachtTurn{}
+
+	c.JSON(http.StatusOK, turn.Json())
 }

@@ -3,7 +3,7 @@ package models
 type Yacht struct {
 	BaseModel
 	Total    int
-	NumTurns int
+	NumTurns int         `gorm:"column:NumTurns"`
 	UserId   NullInt64   `json:"user_id" swaggerType:"string"`
 	User     User        `json:"user,omitempty"`
 	Turns    []YachtTurn `json:"turns,omitempty"`
@@ -12,7 +12,7 @@ type Yacht struct {
 type YachtJson struct {
 	BaseModel
 	Total    int
-	NumTurns int
+	NumTurns int             `gorm:"column:NumTurns"`
 	UserId   NullInt64       `json:"user_id" swaggerType:"string"`
 	User     User            `json:"user,omitempty"`
 	Turns    []YachtTurnJson `json:"turns,omitempty"`
