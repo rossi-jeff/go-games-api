@@ -8,6 +8,7 @@ import (
 	"go-games-api/utilities"
 	"math/rand"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -121,4 +122,61 @@ func TenGrandOptions(c *gin.Context) {
 	c.JSON(http.StatusOK, utilities.TenGrandDiceScoreOptions(params.Dice))
 }
 
-func TenGrandScore(c *gin.Context) {}
+// @Summary      Ten Grand Turn Score
+// @Description  get an array of dice
+// @Tags         Ten Grand
+// @Accept       json
+// @Produce      json
+// @Param Id path int true "Ten Grand ID"
+// @Param	data	body	payloads.TenGrandScoreOptionsPayload		true	"Ten Grand Options"
+// @Success      200  {object} models.TenGrandTurnJson
+// @Router       /api/ten_grand/{Id}/score [post]
+func TenGrandScore(c *gin.Context) {
+	params := payloads.TenGrandScoreOptionsPayload{}
+	id := c.Param("id")
+
+	err := c.ShouldBindJSON(&params)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	dice := params.Dice
+	options := params.Options
+	sort.Slice(options, func(i, j int) bool {
+		return enum.TenGrandDiceRequired[string(options[j].Category)] < enum.TenGrandDiceRequired[string(options[i].Category)]
+	})
+
+	now := time.Now().Format(time.RFC3339)
+	turn := models.TenGrandTurn{}
+	if params.TurnId > 0 {
+		initializers.DB.First(&turn, params.TurnId)
+	} else {
+		tenGrand := models.TenGrand{}
+		initializers.DB.First(&tenGrand, id)
+
+		turn.CreatedAt = now
+		turn.UpdatedAt = now
+		turn.TenGrandId = int64(tenGrand.Id)
+		initializers.DB.Save(&turn)
+	}
+	for i := 0; i < len(options); i++ {
+		opt := options[i]
+		score, used := utilities.CategoryScoreAndDice(opt.Category, dice)
+		dice = utilities.RemoveUsedDice(dice, used)
+
+		tenGrandScore := models.TenGrandScore{}
+		tenGrandScore.TenGrandTurnId = int64(turn.Id)
+		tenGrandScore.Score = score
+		tenGrandScore.Dice = utilities.IntSliceJoin(used, ",")
+		tenGrandScore.Category = enum.TenGrandCategory(enum.TenGrandCategoryArrayIndex(string(opt.Category)))
+		tenGrandScore.CreatedAt = now
+		tenGrandScore.UpdatedAt = now
+		initializers.DB.Save(&tenGrandScore)
+	}
+
+	found := models.TenGrandTurn{}
+	initializers.DB.Preload("Scores").First(&found, turn.Id)
+
+	c.JSON(http.StatusOK, found.Json())
+}

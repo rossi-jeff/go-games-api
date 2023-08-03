@@ -58,3 +58,12 @@ var TenGrandDiceRequired = map[string]int{
 	"FiveKind":        5,
 	"SixKind":         6,
 }
+
+func TenGrandCategoryArrayIndex(cat string) int {
+	for i := 0; i < len(TenGrandCategoryArray); i++ {
+		if TenGrandCategoryArray[i] == cat {
+			return i
+		}
+	}
+	return -1
+}

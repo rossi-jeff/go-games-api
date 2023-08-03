@@ -10,7 +10,7 @@ type TenGrandOptionsPayload struct {
 	Dice []int
 }
 
-type TenGrandScoreOptions struct {
+type TenGrandScoreOptionsPayload struct {
 	TurnId  int
 	Dice    []int
 	Options []TenGrandOption

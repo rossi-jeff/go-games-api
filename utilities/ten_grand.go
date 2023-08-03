@@ -298,7 +298,7 @@ func diceMatchFace(dice []int, face int) []int {
 	return used
 }
 
-func removeUsedDice(dice []int, used []int) []int {
+func RemoveUsedDice(dice []int, used []int) []int {
 	for i := 0; i < len(used); i++ {
 		face := used[i]
 		idx := IntSliceIndexOf(face, dice)
@@ -347,4 +347,45 @@ func TenGrandDiceScoreOptions(dice []int) []payloads.TenGrandOption {
 		return options[j].Score < options[i].Score
 	})
 	return options
+}
+
+func CategoryScoreAndDice(category enum.TenGrandCategoryString, dice []int) (int, []int) {
+	score := 0
+	var used []int
+	switch string(category) {
+	case "CrapOut":
+		score = 0
+		used = append(used, dice...)
+	case "Ones":
+		score = scoreOnesTG(dice)
+		used = diceOnes(dice)
+	case "Fives":
+		score = scoreFivesTG(dice)
+		used = diceFives(dice)
+	case "ThreePairs":
+		score = scoreThreePairTG(dice)
+		used = diceThreePairs(dice)
+	case "Straight":
+		score = scoreStraightTG(dice)
+		used = diceStraight(dice)
+	case "FullHouse":
+		score = scoreFullHouseTG(dice)
+		used = diceFullHouse(dice)
+	case "DoubleThreeKind":
+		score = scoreDoubleThreeKindTG(dice)
+		used = diceDoubleThreeKind(dice)
+	case "ThreeKind":
+		score = scoreThreeKindTG(dice)
+		used = diceThreeKind(dice)
+	case "FourKind":
+		score = scoreFourKindTG(dice)
+		used = diceFourKind(dice)
+	case "FiveKind":
+		score = scoreFiveKindTG(dice)
+		used = diceFiveKind(dice)
+	case "SixKind":
+		score = scoreSixKindTG(dice)
+		used = diceSixKind(dice)
+	}
+	return score, used
 }
