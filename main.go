@@ -4,6 +4,8 @@ import (
 	"go-games-api/controllers"
 	"go-games-api/initializers"
 
+	"github.com/gin-contrib/cors"
+
 	_ "go-games-api/docs"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +28,12 @@ func init() {
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	router := gin.Default()
+
+	// cors default
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
+	router.Use(cors.New(config))
 
 	// docs route
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
