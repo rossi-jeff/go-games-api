@@ -155,4 +155,16 @@ func hangManStatus(word []string, correct []string, wrong []string) enum.GameSta
 	return enum.Playing
 }
 
-func HangManInProgress(c *gin.Context) {}
+func HangManInProgress(c *gin.Context) {
+	userId := utilities.UserIdFromAuthHeader(c)
+	hangMenJson := []models.HangManJson{}
+	if userId > 0 {
+		hangMen := []models.HangMan{}
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&hangMen)
+		for i := 0; i < len(hangMen); i++ {
+			hangMan := hangMen[i].Json()
+			hangMenJson = append(hangMenJson, hangMan)
+		}
+	}
+	c.JSON(http.StatusOK, hangMenJson)
+}

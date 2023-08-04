@@ -181,7 +181,19 @@ func GuessWordHints(c *gin.Context) {
 	c.JSON(http.StatusOK, hints)
 }
 
-func GuessWordInProgress(c *gin.Context) {}
+func GuessWordInProgress(c *gin.Context) {
+	userId := utilities.UserIdFromAuthHeader(c)
+	guessWordsJson := []models.GuessWordJson{}
+	if userId > 0 {
+		guessWords := []models.GuessWord{}
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&guessWords)
+		for i := 0; i < len(guessWords); i++ {
+			guessWord := guessWords[i].Json()
+			guessWordsJson = append(guessWordsJson, guessWord)
+		}
+	}
+	c.JSON(http.StatusOK, guessWordsJson)
+}
 
 func matchGreen(Word string, green []string) bool {
 	word := strings.Split(Word, "")

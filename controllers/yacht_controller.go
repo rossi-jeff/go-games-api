@@ -202,4 +202,16 @@ func updateYachtTotal(id int64) {
 	initializers.DB.Save(&yacht)
 }
 
-func YachtInProgress(c *gin.Context) {}
+func YachtInProgress(c *gin.Context) {
+	userId := utilities.UserIdFromAuthHeader(c)
+	yachtsJson := []models.YachtJson{}
+	if userId > 0 {
+		yachts := []models.Yacht{}
+		initializers.DB.Where("user_id = ? AND NumTurns < 12", userId).Find(&yachts)
+		for i := 0; i < len(yachts); i++ {
+			yacht := yachts[i].Json()
+			yachtsJson = append(yachtsJson, yacht)
+		}
+	}
+	c.JSON(http.StatusOK, yachtsJson)
+}

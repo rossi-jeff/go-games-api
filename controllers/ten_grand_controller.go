@@ -181,4 +181,16 @@ func TenGrandScore(c *gin.Context) {
 	c.JSON(http.StatusOK, found.Json())
 }
 
-func TenGrandInProgress(c *gin.Context) {}
+func TenGrandInProgress(c *gin.Context) {
+	userId := utilities.UserIdFromAuthHeader(c)
+	tenGrandsJson := []models.TenGrandJson{}
+	if userId > 0 {
+		tenGrands := []models.TenGrand{}
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&tenGrands)
+		for i := 0; i < len(tenGrands); i++ {
+			tenGrand := tenGrands[i].Json()
+			tenGrandsJson = append(tenGrandsJson, tenGrand)
+		}
+	}
+	c.JSON(http.StatusOK, tenGrandsJson)
+}

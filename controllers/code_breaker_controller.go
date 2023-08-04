@@ -228,4 +228,16 @@ func UpdateCodeBreakerStatus(codeBreaker models.CodeBreaker, black int) {
 	}
 }
 
-func CodeBreakerInProgress(c *gin.Context) {}
+func CodeBreakerInProgress(c *gin.Context) {
+	userId := utilities.UserIdFromAuthHeader(c)
+	codeBreakersJson := []models.CodeBreakerJson{}
+	if userId > 0 {
+		codeBreakers := []models.CodeBreaker{}
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&codeBreakers)
+		for i := 0; i < len(codeBreakers); i++ {
+			codeBreaker := codeBreakers[i].Json()
+			codeBreakersJson = append(codeBreakersJson, codeBreaker)
+		}
+	}
+	c.JSON(http.StatusOK, codeBreakersJson)
+}

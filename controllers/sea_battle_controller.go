@@ -379,4 +379,16 @@ func opponentTurn(c *gin.Context, seaBattle models.SeaBattle) {
 	c.JSON(http.StatusCreated, turn.Json())
 }
 
-func SeaBattleInProgress(c *gin.Context) {}
+func SeaBattleInProgress(c *gin.Context) {
+	userId := utilities.UserIdFromAuthHeader(c)
+	seaBattlesJson := []models.SeaBattleJson{}
+	if userId > 0 {
+		seabattles := []models.SeaBattle{}
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&seabattles)
+		for i := 0; i < len(seabattles); i++ {
+			seaBattle := seabattles[i].Json()
+			seaBattlesJson = append(seaBattlesJson, seaBattle)
+		}
+	}
+	c.JSON(http.StatusOK, seaBattlesJson)
+}
