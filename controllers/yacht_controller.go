@@ -201,3 +201,5 @@ func updateYachtTotal(id int64) {
 
 	initializers.DB.Save(&yacht)
 }
+
+func YachtInProgress(c *gin.Context) {}

@@ -14,8 +14,8 @@ type TenGrand struct {
 type TenGrandJson struct {
 	BaseModel
 	Score  int
-	UserId int64 `json:"user_id" swaggerType:"string"`
-	User   User  `json:"user,omitempty"`
+	UserId int64    `json:"user_id" swaggerType:"string"`
+	User   UserJson `json:"user,omitempty"`
 	Status enum.GameStatusString
 	Turns  []TenGrandTurnJson `json:"turns,omitempty"`
 }
@@ -25,7 +25,7 @@ func (t TenGrand) Json() TenGrandJson {
 		BaseModel: t.BaseModel,
 		Score:     t.Score,
 		UserId:    NullInt64Value(t.UserId),
-		User:      t.User,
+		User:      t.User.Json(),
 		Status:    enum.GameStatusString(t.Status.String()),
 	}
 	if len(t.Turns) > 0 {

@@ -378,3 +378,5 @@ func opponentTurn(c *gin.Context, seaBattle models.SeaBattle) {
 
 	c.JSON(http.StatusCreated, turn.Json())
 }
+
+func SeaBattleInProgress(c *gin.Context) {}

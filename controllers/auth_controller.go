@@ -18,7 +18,7 @@ import (
 // @Accept       json
 // @Produce      json
 // @Param	data	body	payloads.CredentialsPayload		true	"User Credentials"
-// @Success      201  {object} models.User
+// @Success      201  {object} models.UserJson
 // @Router       /api/auth/register [post]
 func Register(c *gin.Context) {
 	params := payloads.CredentialsPayload{}
@@ -53,7 +53,7 @@ func Register(c *gin.Context) {
 	user.PassWord = ""
 
 	// response
-	c.JSON(http.StatusCreated, user)
+	c.JSON(http.StatusCreated, user.Json())
 }
 
 // @Summary      Login

@@ -181,6 +181,8 @@ func GuessWordHints(c *gin.Context) {
 	c.JSON(http.StatusOK, hints)
 }
 
+func GuessWordInProgress(c *gin.Context) {}
+
 func matchGreen(Word string, green []string) bool {
 	word := strings.Split(Word, "")
 	if len(green) == 0 {

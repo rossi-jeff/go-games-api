@@ -14,7 +14,7 @@ type YachtJson struct {
 	Total    int
 	NumTurns int             `gorm:"column:NumTurns"`
 	UserId   int64           `json:"user_id" swaggerType:"string"`
-	User     User            `json:"user,omitempty"`
+	User     UserJson        `json:"user,omitempty"`
 	Turns    []YachtTurnJson `json:"turns,omitempty"`
 }
 
@@ -24,7 +24,7 @@ func (y Yacht) Json() YachtJson {
 		Total:     y.Total,
 		NumTurns:  y.NumTurns,
 		UserId:    NullInt64Value(y.UserId),
-		User:      y.User,
+		User:      y.User.Json(),
 	}
 	if len(y.Turns) > 0 {
 		for i := 0; i < len(y.Turns); i++ {

@@ -154,3 +154,5 @@ func hangManStatus(word []string, correct []string, wrong []string) enum.GameSta
 	}
 	return enum.Playing
 }
+
+func HangManInProgress(c *gin.Context) {}

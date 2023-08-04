@@ -48,6 +48,7 @@ func main() {
 	api.POST("/word/random", controllers.WordRandom)
 	// code breaker controller
 	api.GET("/code_breaker", controllers.CodeBreakerIndex)
+	api.GET("/code_breaker/progress", controllers.CodeBreakerInProgress)
 	api.GET("/code_breaker/:id", controllers.CodeBreakerById)
 	api.POST("/code_breaker", controllers.CodeBreakerCreate)
 	api.POST("/code_breaker/:id/guess", controllers.CodeBreakerGuess)
@@ -63,12 +64,14 @@ func main() {
 	api.PATCH("/free_cell/:id", controllers.FreeCellUpdate)
 	// guess word controller
 	api.GET("/guess_word", controllers.GuessWordIndex)
+	api.GET("/guess_word/progress", controllers.GuessWordInProgress)
 	api.GET("/guess_word/:id", controllers.GuessWordById)
 	api.POST("/guess_word", controllers.GuessWordCreate)
 	api.POST("/guess_word/:id/guess", controllers.GuessWordGuess)
 	api.POST("/guess_word/hint", controllers.GuessWordHints)
 	// hang man controller
 	api.GET("/hang_man", controllers.HangManIndex)
+	api.GET("/hang_man/progress", controllers.HangManInProgress)
 	api.GET("/hang_man/:id", controllers.HangManById)
 	api.POST("/hang_man", controllers.HangManCreate)
 	api.POST("/hang_man/:id/guess", controllers.HangManGuess)
@@ -84,6 +87,7 @@ func main() {
 	api.PATCH("/poker_square/:id", controllers.PokerSquareUpdate)
 	// sea battle controller
 	api.GET("/sea_battle", controllers.SeaBattleIndex)
+	api.GET("/sea_battle/progress", controllers.SeaBattleInProgress)
 	api.GET("/sea_battle/:id", controllers.SeaBattleById)
 	api.POST("/sea_battle", controllers.SeaBattleCreate)
 	api.POST("/sea_battle/:id/ship", controllers.SeaBattleShip)
@@ -95,6 +99,7 @@ func main() {
 	api.PATCH("/spider/:id", controllers.SpiderUpdate)
 	// ten grand controller
 	api.GET("/ten_grand", controllers.TenGrandIndex)
+	api.GET("/ten_grand/progress", controllers.TenGrandInProgress)
 	api.GET("/ten_grand/:id", controllers.TenGrandById)
 	api.POST("/ten_grand", controllers.TenGrandCreate)
 	api.POST("/ten_grand/:id/roll", controllers.TenGrandRoll)
@@ -102,6 +107,7 @@ func main() {
 	api.POST("/ten_grand/:id/score", controllers.TenGrandScore)
 	// yacht controller
 	api.GET("/yacht", controllers.YachtIndex)
+	api.GET("/yacht/progress", controllers.YachtInProgress)
 	api.GET("/yacht/:id", controllers.YachtById)
 	api.POST("/yacht", controllers.YachtCreate)
 	api.POST("/yacht/:id/roll", controllers.YachtRoll)

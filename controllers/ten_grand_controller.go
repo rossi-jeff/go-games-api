@@ -180,3 +180,5 @@ func TenGrandScore(c *gin.Context) {
 
 	c.JSON(http.StatusOK, found.Json())
 }
+
+func TenGrandInProgress(c *gin.Context) {}

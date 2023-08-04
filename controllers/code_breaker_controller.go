@@ -227,3 +227,5 @@ func UpdateCodeBreakerStatus(codeBreaker models.CodeBreaker, black int) {
 		initializers.DB.Model(&codeBreaker).Updates(models.CodeBreaker{Status: update.Status})
 	}
 }
+
+func CodeBreakerInProgress(c *gin.Context) {}

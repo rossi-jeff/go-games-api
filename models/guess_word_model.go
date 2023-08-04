@@ -21,10 +21,10 @@ type GuessWordPaginated struct {
 type GuessWordJson struct {
 	BaseModel
 	Score   int
-	UserId  int64 `json:"user_id" swaggerType:"string"`
-	User    User  `json:"user,omitempty"`
-	WordId  int64 `json:"word_id" swaggerType:"string"`
-	Word    Word  `json:"word,omitempty"`
+	UserId  int64    `json:"user_id" swaggerType:"string"`
+	User    UserJson `json:"user,omitempty"`
+	WordId  int64    `json:"word_id" swaggerType:"string"`
+	Word    Word     `json:"word,omitempty"`
 	Status  enum.GameStatusString
 	Guesses []GuessWordGuessJson `json:"guesses,omitempty"`
 }
@@ -34,7 +34,7 @@ func (g GuessWord) Json() GuessWordJson {
 		BaseModel: g.BaseModel,
 		Score:     g.Score,
 		UserId:    NullInt64Value(g.UserId),
-		User:      g.User,
+		User:      g.User.Json(),
 		WordId:    NullInt64Value(g.WordId),
 		Word:      g.Word,
 		Status:    enum.GameStatusString(g.Status.String()),
