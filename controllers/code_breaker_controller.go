@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -68,6 +69,7 @@ func CodeBreakerById(c *gin.Context) {
 // @Router       /api/code_breaker [post]
 func CodeBreakerCreate(c *gin.Context) {
 	params := payloads.CodeBreakerCreatePayload{}
+	userId := utilities.UserIdFromAuthHeader(c)
 
 	err := c.ShouldBindJSON(&params)
 	if err != nil {
@@ -78,6 +80,9 @@ func CodeBreakerCreate(c *gin.Context) {
 	codeBreaker := models.CodeBreaker{}
 
 	now := time.Now().Format(time.RFC3339)
+	if userId > 0 {
+		codeBreaker.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	codeBreaker.Columns = params.Columns
 	codeBreaker.Available = strings.Join(params.Colors, ",")
 	codeBreaker.Colors = len(params.Colors)

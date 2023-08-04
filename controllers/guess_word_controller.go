@@ -68,6 +68,7 @@ func GuessWordById(c *gin.Context) {
 // @Router       /api/guess_word [post]
 func GuessWordCreate(c *gin.Context) {
 	params := payloads.GuesssWordCreatePayload{}
+	userId := utilities.UserIdFromAuthHeader(c)
 
 	err := c.ShouldBindJSON(&params)
 	if err != nil {
@@ -81,6 +82,9 @@ func GuessWordCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
 	guessWord := models.GuessWord{}
 	guessWord.WordId = sql.NullInt64{Int64: int64(word.Id), Valid: true}
+	if userId > 0 {
+		guessWord.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	guessWord.CreatedAt = now
 	guessWord.UpdatedAt = now
 	guessWord.Status = enum.Playing

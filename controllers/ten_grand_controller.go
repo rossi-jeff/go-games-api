@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -66,7 +67,12 @@ func TenGrandById(c *gin.Context) {
 // @Router       /api/ten_grand [post]
 func TenGrandCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
+	userId := utilities.UserIdFromAuthHeader(c)
+
 	tenGrand := models.TenGrand{}
+	if userId > 0 {
+		tenGrand.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	tenGrand.Status = enum.Playing
 	tenGrand.CreatedAt = now
 	tenGrand.UpdatedAt = now

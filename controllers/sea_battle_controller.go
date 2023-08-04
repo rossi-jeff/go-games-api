@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -66,6 +67,7 @@ func SeaBattleById(c *gin.Context) {
 // @Router       /api/sea_battle [post]
 func SeaBattleCreate(c *gin.Context) {
 	params := payloads.SeaBattleCreatePayload{}
+	userId := utilities.UserIdFromAuthHeader(c)
 
 	err := c.ShouldBindJSON(&params)
 	if err != nil {
@@ -75,6 +77,9 @@ func SeaBattleCreate(c *gin.Context) {
 
 	now := time.Now().Format(time.RFC3339)
 	seaBattle := models.SeaBattle{}
+	if userId > 0 {
+		seaBattle.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	seaBattle.Axis = params.Axis
 	seaBattle.CreatedAt = now
 	seaBattle.UpdatedAt = now

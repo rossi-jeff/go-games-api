@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -64,6 +65,7 @@ func SpiderById(c *gin.Context) {
 // @Router       /api/spider [post]
 func SpiderCreate(c *gin.Context) {
 	params := payloads.SpiderCreatePayload{}
+	userId := utilities.UserIdFromAuthHeader(c)
 
 	err := c.ShouldBindJSON(&params)
 	if err != nil {
@@ -73,6 +75,9 @@ func SpiderCreate(c *gin.Context) {
 
 	now := time.Now().Format(time.RFC3339)
 	spider := models.Spider{}
+	if userId > 0 {
+		spider.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	spider.Suits = enum.Suit(params.Suits)
 	spider.Status = enum.Playing
 	spider.CreatedAt = now

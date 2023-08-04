@@ -66,7 +66,12 @@ func YachtById(c *gin.Context) {
 // @Router       /api/yacht [post]
 func YachtCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
+	userId := utilities.UserIdFromAuthHeader(c)
+
 	yacht := models.Yacht{}
+	if userId > 0 {
+		yacht.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	yacht.CreatedAt = now
 	yacht.UpdatedAt = now
 	initializers.DB.Save(&yacht)

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -63,7 +64,12 @@ func KlondikeById(c *gin.Context) {
 // @Router       /api/klondike [post]
 func KlondikeCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
+	userId := utilities.UserIdFromAuthHeader(c)
+
 	klondike := models.Klondike{}
+	if userId > 0 {
+		klondike.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	klondike.Status = enum.Playing
 	klondike.CreatedAt = now
 	klondike.UpdatedAt = now

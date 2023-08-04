@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -63,7 +64,12 @@ func PokerSquareById(c *gin.Context) {
 // @Router       /api/poker_square [post]
 func PokerSquareCreate(c *gin.Context) {
 	now := time.Now().Format(time.RFC3339)
+	userId := utilities.UserIdFromAuthHeader(c)
+
 	pokerSquare := models.PokerSquare{}
+	if userId > 0 {
+		pokerSquare.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	pokerSquare.Status = enum.Playing
 	pokerSquare.CreatedAt = now
 	pokerSquare.UpdatedAt = now

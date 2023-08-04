@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -62,8 +63,12 @@ func FreeCellById(c *gin.Context) {
 // @Success      201  {object} models.FreeCellJson
 // @Router       /api/free_cell [post]
 func FreeCellCreate(c *gin.Context) {
+	userId := utilities.UserIdFromAuthHeader(c)
 	now := time.Now().Format(time.RFC3339)
 	freeCell := models.FreeCell{}
+	if userId > 0 {
+		freeCell.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	freeCell.Status = enum.Playing
 	freeCell.CreatedAt = now
 	freeCell.UpdatedAt = now

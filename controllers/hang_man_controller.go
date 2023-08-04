@@ -66,6 +66,7 @@ func HangManById(c *gin.Context) {
 // @Router       /api/hang_man [post]
 func HangManCreate(c *gin.Context) {
 	params := payloads.HangManCreatePayload{}
+	userId := utilities.UserIdFromAuthHeader(c)
 
 	err := c.ShouldBindJSON(&params)
 	if err != nil {
@@ -78,6 +79,9 @@ func HangManCreate(c *gin.Context) {
 
 	now := time.Now().Format(time.RFC3339)
 	hangMan := models.HangMan{}
+	if userId > 0 {
+		hangMan.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	hangMan.WordId = sql.NullInt64{Int64: int64(word.Id), Valid: true}
 	hangMan.CreatedAt = now
 	hangMan.UpdatedAt = now

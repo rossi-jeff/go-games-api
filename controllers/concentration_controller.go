@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -62,8 +63,12 @@ func ConcentrationById(c *gin.Context) {
 // @Success      201  {object} models.ConcentrationJson
 // @Router       /api/concentration [post]
 func ConcentrationCreate(c *gin.Context) {
+	userId := utilities.UserIdFromAuthHeader(c)
 	now := time.Now().Format(time.RFC3339)
 	concentration := models.Concentration{}
+	if userId > 0 {
+		concentration.UserId = sql.NullInt64{Int64: int64(userId), Valid: true}
+	}
 	concentration.Status = enum.Playing
 	concentration.CreatedAt = now
 	concentration.UpdatedAt = now
