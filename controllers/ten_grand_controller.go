@@ -192,7 +192,7 @@ func TenGrandInProgress(c *gin.Context) {
 	tenGrandsJson := []models.TenGrandJson{}
 	if userId > 0 {
 		tenGrands := []models.TenGrand{}
-		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&tenGrands)
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Preload(clause.Associations).Find(&tenGrands)
 		for i := 0; i < len(tenGrands); i++ {
 			tenGrand := tenGrands[i].Json()
 			tenGrandsJson = append(tenGrandsJson, tenGrand)

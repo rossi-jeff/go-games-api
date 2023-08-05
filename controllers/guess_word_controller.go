@@ -190,7 +190,7 @@ func GuessWordInProgress(c *gin.Context) {
 	guessWordsJson := []models.GuessWordJson{}
 	if userId > 0 {
 		guessWords := []models.GuessWord{}
-		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&guessWords)
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Preload(clause.Associations).Find(&guessWords)
 		for i := 0; i < len(guessWords); i++ {
 			guessWord := guessWords[i].Json()
 			guessWordsJson = append(guessWordsJson, guessWord)

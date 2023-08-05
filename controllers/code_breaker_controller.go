@@ -229,8 +229,36 @@ func UpdateCodeBreakerStatus(codeBreaker models.CodeBreaker, black int) {
 	}
 
 	if update.Status != enum.Playing {
-		initializers.DB.Model(&codeBreaker).Updates(models.CodeBreaker{Status: update.Status})
+		update.Score = CalulateCodeBreakerScore(int64(codeBreaker.Id))
+		initializers.DB.Model(&codeBreaker).Updates(models.CodeBreaker{Status: update.Status, Score: update.Score})
 	}
+}
+
+func CalulateCodeBreakerScore(id int64) int {
+	codeBreaker := models.CodeBreaker{}
+	initializers.DB.Preload("Guesses.Keys").Preload(clause.Associations).Find(&codeBreaker, id)
+	score := 0
+	perColumn := 10
+	perColor := 10
+	perBlack := 10
+	perWhite := 5
+	colorBonus := perColor * codeBreaker.Colors
+	perGuess := perColumn * codeBreaker.Columns
+	maxGuesses := codeBreaker.Columns * 2
+	score = (maxGuesses * perGuess) + colorBonus
+	for i := 0; i < len(codeBreaker.Guesses); i++ {
+		score = score - perGuess
+		guess := codeBreaker.Guesses[i]
+		for j := 0; j < len(guess.Keys); j++ {
+			key := guess.Keys[j]
+			if key.Key == enum.BLACK {
+				score = score + perBlack
+			} else if key.Key == enum.WHITE {
+				score = score + perWhite
+			}
+		}
+	}
+	return score
 }
 
 func CodeBreakerInProgress(c *gin.Context) {
@@ -238,7 +266,7 @@ func CodeBreakerInProgress(c *gin.Context) {
 	codeBreakersJson := []models.CodeBreakerJson{}
 	if userId > 0 {
 		codeBreakers := []models.CodeBreaker{}
-		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&codeBreakers)
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Preload(clause.Associations).Find(&codeBreakers)
 		for i := 0; i < len(codeBreakers); i++ {
 			codeBreaker := codeBreakers[i].Json()
 			codeBreakersJson = append(codeBreakersJson, codeBreaker)

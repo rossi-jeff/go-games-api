@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm/clause"
 )
 
 // @Summary      Hang Man
@@ -164,7 +165,7 @@ func HangManInProgress(c *gin.Context) {
 	hangMenJson := []models.HangManJson{}
 	if userId > 0 {
 		hangMen := []models.HangMan{}
-		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&hangMen)
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Preload(clause.Associations).Find(&hangMen)
 		for i := 0; i < len(hangMen); i++ {
 			hangMan := hangMen[i].Json()
 			hangMenJson = append(hangMenJson, hangMan)

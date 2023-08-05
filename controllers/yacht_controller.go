@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm/clause"
 )
 
 // @Summary      Yacht
@@ -212,7 +213,7 @@ func YachtInProgress(c *gin.Context) {
 	yachtsJson := []models.YachtJson{}
 	if userId > 0 {
 		yachts := []models.Yacht{}
-		initializers.DB.Where("user_id = ? AND NumTurns < 12", userId).Find(&yachts)
+		initializers.DB.Where("user_id = ? AND NumTurns < 12", userId).Preload(clause.Associations).Find(&yachts)
 		for i := 0; i < len(yachts); i++ {
 			yacht := yachts[i].Json()
 			yachtsJson = append(yachtsJson, yacht)

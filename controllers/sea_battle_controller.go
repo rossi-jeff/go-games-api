@@ -389,7 +389,7 @@ func SeaBattleInProgress(c *gin.Context) {
 	seaBattlesJson := []models.SeaBattleJson{}
 	if userId > 0 {
 		seabattles := []models.SeaBattle{}
-		initializers.DB.Where("user_id = ? AND Status = 1", userId).Find(&seabattles)
+		initializers.DB.Where("user_id = ? AND Status = 1", userId).Preload(clause.Associations).Find(&seabattles)
 		for i := 0; i < len(seabattles); i++ {
 			seaBattle := seabattles[i].Json()
 			seaBattlesJson = append(seaBattlesJson, seaBattle)
