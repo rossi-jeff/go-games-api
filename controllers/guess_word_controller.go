@@ -304,7 +304,31 @@ func updateGuessWordStatus(green int, wordLength int, guesses int, id int64) {
 	}
 	if status != enum.Playing {
 		guessWord := models.GuessWord{}
+		score := calculateGuessWordScore(id, wordLength)
 		initializers.DB.First(&guessWord, id)
-		initializers.DB.Model(&guessWord).Update("Status", status)
+		initializers.DB.Model(&guessWord).Update("Status", status).Update("Score", score)
 	}
+}
+
+func calculateGuessWordScore(id int64, wordLength int) int {
+	perGreen := 10
+	perBrown := 5
+	perGuess := wordLength * perGreen
+	maxGuesses := int(math.Ceil((float64(wordLength) * 3) / 2))
+	score := perGuess * maxGuesses
+	guesses := []models.GuessWordGuess{}
+	initializers.DB.Where("guess_word_id = ?", id).Preload("Ratings").Find(&guesses)
+	for i := 0; i < len(guesses); i++ {
+		guess := guesses[i]
+		score = score - perGuess
+		for j := 0; j < len(guess.Ratings); j++ {
+			rating := guess.Ratings[j]
+			if rating.Rating == enum.GREEN {
+				score = score + perGreen
+			} else if rating.Rating == enum.BROWN {
+				score = score + perBrown
+			}
+		}
+	}
+	return score
 }
