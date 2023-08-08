@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"database/sql"
+	"fmt"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -99,6 +100,11 @@ func TenGrandRoll(c *gin.Context) {
 		return
 	}
 
+	pretty, err := utilities.PrettyStruct(params)
+	if err == nil {
+		fmt.Println(pretty)
+	}
+
 	var dice []int
 	for i := 0; i < params.Quantity; i++ {
 		roll := rand.Intn(6) + 1
@@ -125,7 +131,17 @@ func TenGrandOptions(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, utilities.TenGrandDiceScoreOptions(params.Dice))
+	pretty, err := utilities.PrettyStruct(params)
+	if err == nil {
+		fmt.Println(pretty)
+	}
+	dice, options := utilities.TenGrandDiceScoreOptions(params.Dice)
+	type OptionsResponse struct {
+		Dice    []int
+		Options []payloads.TenGrandOption
+	}
+
+	c.JSON(http.StatusOK, OptionsResponse{Dice: dice, Options: options})
 }
 
 // @Summary      Ten Grand Turn Score
@@ -153,14 +169,14 @@ func TenGrandScore(c *gin.Context) {
 		return enum.TenGrandDiceRequired[string(options[j].Category)] < enum.TenGrandDiceRequired[string(options[i].Category)]
 	})
 
+	tenGrand := models.TenGrand{}
+	initializers.DB.First(&tenGrand, id)
+
 	now := time.Now().Format(time.RFC3339)
 	turn := models.TenGrandTurn{}
 	if params.TurnId > 0 {
 		initializers.DB.First(&turn, params.TurnId)
 	} else {
-		tenGrand := models.TenGrand{}
-		initializers.DB.First(&tenGrand, id)
-
 		turn.CreatedAt = now
 		turn.UpdatedAt = now
 		turn.TenGrandId = int64(tenGrand.Id)
@@ -181,10 +197,53 @@ func TenGrandScore(c *gin.Context) {
 		initializers.DB.Save(&tenGrandScore)
 	}
 
+	updateTenGrandTurnScore(int64(turn.Id))
+
 	found := models.TenGrandTurn{}
 	initializers.DB.Preload("Scores").First(&found, turn.Id)
 
+	updateTenGrandScore(int64(tenGrand.Id))
+
 	c.JSON(http.StatusOK, found.Json())
+}
+
+func updateTenGrandTurnScore(id int64) {
+	score := 0
+	crapOut := false
+	scores := []models.TenGrandScore{}
+	initializers.DB.Where("ten_grand_turn_id = ?", id).Find(&scores)
+	for s := 0; s < len(scores); s++ {
+		if scores[s].Score > 0 {
+			score = score + scores[s].Score
+		}
+		if scores[s].Category == enum.CrapOut {
+			crapOut = true
+		}
+	}
+	if crapOut {
+		score = 0
+	}
+	turn := models.TenGrandTurn{}
+	initializers.DB.First(&turn, id)
+	initializers.DB.Model(&turn).Update("Score", score)
+}
+
+func updateTenGrandScore(id int64) {
+	turns := []models.TenGrandTurn{}
+	score := 0
+	status := enum.Playing
+	initializers.DB.Where("ten_grand_id = ?", id).Find(&turns)
+	for t := 0; t < len(turns); t++ {
+		if turns[t].Score > 0 {
+			score = score + turns[t].Score
+		}
+	}
+	if score >= 10000 {
+		status = enum.Won
+	}
+	tenGrand := models.TenGrand{}
+	initializers.DB.First(&tenGrand, id)
+	initializers.DB.Model(&tenGrand).Update("Score", score).Update("Status", status)
 }
 
 func TenGrandInProgress(c *gin.Context) {

@@ -309,7 +309,7 @@ func RemoveUsedDice(dice []int, used []int) []int {
 	return dice
 }
 
-func TenGrandDiceScoreOptions(dice []int) []payloads.TenGrandOption {
+func TenGrandDiceScoreOptions(dice []int) ([]int, []payloads.TenGrandOption) {
 	var options []payloads.TenGrandOption
 	for i := 0; i < len(enum.TenGrandCategoryArray); i++ {
 		option := payloads.TenGrandOption{
@@ -346,7 +346,7 @@ func TenGrandDiceScoreOptions(dice []int) []payloads.TenGrandOption {
 	sort.Slice(options, func(i, j int) bool {
 		return options[j].Score < options[i].Score
 	})
-	return options
+	return dice, options
 }
 
 func CategoryScoreAndDice(category enum.TenGrandCategoryString, dice []int) (int, []int) {
