@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"database/sql"
+	"fmt"
 	"go-games-api/enum"
 	"go-games-api/initializers"
 	"go-games-api/models"
@@ -249,7 +250,9 @@ func includeAllBrown(Word string, brown [][]string) bool {
 	return true
 }
 
+// there appears to be a bug in rating sselection resulting in truncated hints
 func calculateGuessRatings(Word string, Guess string, guessId int64) int {
+	fmt.Println("calculateGuessRatings", Word, Guess)
 	var green []int
 	var brown []int
 	word := strings.Split(Word, "")
@@ -262,6 +265,7 @@ func calculateGuessRatings(Word string, Guess string, guessId int64) int {
 		if letter == word[i] {
 			green = append(green, i)
 			word[i] = ""
+			fmt.Println("green", i)
 		}
 	}
 	for i := l - 1; i > -0; i-- {
@@ -271,6 +275,7 @@ func calculateGuessRatings(Word string, Guess string, guessId int64) int {
 			if idx != -1 {
 				brown = append(brown, i)
 				word[idx] = ""
+				fmt.Println("brown", i)
 			}
 		}
 	}
@@ -281,6 +286,8 @@ func calculateGuessRatings(Word string, Guess string, guessId int64) int {
 		} else if utilities.IntSliceIndexOf(i, brown) != -1 {
 			rating = enum.BROWN
 		}
+
+		fmt.Println("rating", rating.String(), i)
 
 		now := time.Now().Format(time.RFC3339)
 		guessRating := models.GuessWordGuessRating{}

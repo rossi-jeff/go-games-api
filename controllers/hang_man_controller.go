@@ -132,6 +132,9 @@ func HangManGuess(c *gin.Context) {
 	hangMan.Correct = strings.Join(utilities.StringSliceUnique(correct), ",")
 	hangMan.Wrong = strings.Join(utilities.StringSliceUnique(wrong), ",")
 	hangMan.Status = hangManStatus(word, correct, wrong)
+	if hangMan.Status != enum.Playing {
+		hangMan.Score = hangManScore(word, correct, wrong)
+	}
 	initializers.DB.Save(&hangMan)
 
 	response := payloads.HangManGuessResponse{
@@ -158,6 +161,15 @@ func hangManStatus(word []string, correct []string, wrong []string) enum.GameSta
 		return enum.Lost
 	}
 	return enum.Playing
+}
+
+func hangManScore(word []string, correct []string, wrong []string) int {
+	perLetter := 10
+	perCorrect := 5
+	score := len(utilities.StringSliceUnique(word)) * perLetter
+	score = score + (len(correct) * perCorrect)
+	score = score - (len(wrong) * perLetter)
+	return score
 }
 
 func HangManInProgress(c *gin.Context) {

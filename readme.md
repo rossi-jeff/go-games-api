@@ -3,7 +3,7 @@
 Build Swagger docs (issues with nullable int64)
 
 ```
- swag init --parseDependency  --parseInternal --parseDepth 1
+swag init --parseDependency  --parseInternal --parseDepth 1
 ```
 
 Run project
