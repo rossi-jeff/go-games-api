@@ -281,6 +281,7 @@ func playerTurn(c *gin.Context, seaBattle models.SeaBattle, Horizontal string, V
 				if point.Horizontal == Horizontal && point.Vertical == Vertical {
 					if hits+1 == ship.Size {
 						target = enum.Sunk
+						initializers.DB.Model(&ship).Update("Sunk", true)
 					} else {
 						target = enum.Hit
 					}
@@ -303,6 +304,8 @@ func playerTurn(c *gin.Context, seaBattle models.SeaBattle, Horizontal string, V
 	}
 
 	turn := models.SeaBattleTurn{}
+	turn.Horizontal = Horizontal
+	turn.Vertical = Vertical
 	turn.SeaBattleId = int64(seaBattle.Id)
 	turn.CreatedAt = now
 	turn.UpdatedAt = now
@@ -312,6 +315,8 @@ func playerTurn(c *gin.Context, seaBattle models.SeaBattle, Horizontal string, V
 		turn.ShipType = enum.ShipType(shipType)
 	}
 	initializers.DB.Save(&turn)
+
+	updateSeaBattleStatus(int64(seaBattle.Id))
 
 	c.JSON(http.StatusCreated, turn.Json())
 }
@@ -349,6 +354,7 @@ func opponentTurn(c *gin.Context, seaBattle models.SeaBattle) {
 				if point.Horizontal == Horizontal && point.Vertical == Vertical {
 					if hits+1 == ship.Size {
 						target = enum.Sunk
+						initializers.DB.Model(&ship).Update("Sunk", true)
 					} else {
 						target = enum.Hit
 					}
@@ -371,17 +377,79 @@ func opponentTurn(c *gin.Context, seaBattle models.SeaBattle) {
 	}
 
 	turn := models.SeaBattleTurn{}
+	turn.Horizontal = Horizontal
+	turn.Vertical = Vertical
 	turn.SeaBattleId = int64(seaBattle.Id)
 	turn.CreatedAt = now
 	turn.UpdatedAt = now
 	turn.Target = target
-	turn.Navy = enum.Player
+	turn.Navy = enum.Opponent
 	if shipType != -1 {
 		turn.ShipType = enum.ShipType(shipType)
 	}
 	initializers.DB.Save(&turn)
 
+	updateSeaBattleStatus(int64(seaBattle.Id))
+
 	c.JSON(http.StatusCreated, turn.Json())
+}
+
+func updateSeaBattleStatus(id int64) {
+	status := enum.Playing
+	sunk := map[enum.Navy]bool{
+		enum.Opponent: true,
+		enum.Player:   true,
+	}
+	seaBattle := models.SeaBattle{}
+	initializers.DB.Preload("Ships.Points").Preload("Ships.Hits").Preload(clause.Associations).First(&seaBattle, id)
+	for s := 0; s < len(seaBattle.Ships); s++ {
+		ship := seaBattle.Ships[s]
+		if ship.Navy == enum.Player {
+			if !ship.Sunk {
+				sunk[enum.Player] = false
+			}
+		} else {
+			if !ship.Sunk {
+				sunk[enum.Opponent] = false
+			}
+		}
+	}
+	if sunk[enum.Player] {
+		status = enum.Lost
+	} else if sunk[enum.Opponent] {
+		status = enum.Won
+	}
+	if status != enum.Playing {
+		score := 0
+		maxTurns := seaBattle.Axis * seaBattle.Axis * 2
+		perMiss := 5
+		perHit := 10
+		if status == enum.Won {
+			score = maxTurns * perMiss
+		}
+		for t := 0; t < len(seaBattle.Turns); t++ {
+			turn := seaBattle.Turns[t]
+			score = score - perMiss
+			if turn.Navy == enum.Player {
+				if turn.Target == enum.Sunk {
+					score = score + (perHit * 2)
+				} else if turn.Target == enum.Hit {
+					score = score + perHit
+				} else {
+					score = score - perMiss
+				}
+			} else {
+				if turn.Target == enum.Sunk {
+					score = score - (perHit * 2)
+				} else if turn.Target == enum.Hit {
+					score = score - perHit
+				} else {
+					score = score + perMiss
+				}
+			}
+		}
+		initializers.DB.Model(&seaBattle).Update("Status", status).Update("Score", score)
+	}
 }
 
 func SeaBattleInProgress(c *gin.Context) {
